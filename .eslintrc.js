@@ -15,7 +15,11 @@ module.exports = {
     plugins: ['@typescript-eslint', 'import'],
     rules: {
         // Your custom rules
-        'import/extensions': ['error', 'ignorePackages', { js: 'never', ts: 'never', jsx: 'never', tsx: 'never' }],
+        'import/extensions': [
+            'error',
+            'ignorePackages',
+            { js: 'never', jsx: 'never', ts: 'never', tsx: 'never' },
+        ],
         'import/no-extraneous-dependencies': ['error', { devDependencies: true }],
     },
     settings: {
