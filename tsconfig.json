@@ -21,6 +21,12 @@
     "jsx": "react-jsx"
   },
   "include": [
-    "src"
+    "src", // The source folder
+    ".eslintrc.js", // Add ESLint config if necessary
+    "src/**/*.ts",
+    "src/**/*.tsx"
+  ],
+  "exclude": [
+    "node_modules" // Exclude unnecessary directories
   ]
 }

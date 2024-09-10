@@ -15,11 +15,11 @@ const Menu = ({ menuItems }: HeaderProps) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   return (
-    <header className="flex items-center justify-between p-4 bg-white">
+    <header className="flex items-center justify-between pt-2 pr-4 bg-white">
       <div className="flex items-center">
         <div className="mr-2">
         </div>
-        <img src={logo} />
+        <img src={logo} className={'max-h-[50px]'} />
       </div>
       <div className="flex items-center">
         <button className="mr-4" aria-label="Search">
@@ -30,7 +30,7 @@ const Menu = ({ menuItems }: HeaderProps) => {
         </button>
       </div>
       {isMenuOpen && (
-        <nav className="absolute top-16 right-0 shadow-md p-4">
+        <nav className="absolute top-12 right-2 shadow-md p-2">
           <ul>
             {menuItems.map((item, index) => (
               <li key={index} className="mb-2">

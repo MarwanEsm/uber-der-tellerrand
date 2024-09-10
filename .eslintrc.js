@@ -8,23 +8,22 @@ module.exports = {
     extends: [
         'eslint:recommended',
         'plugin:@typescript-eslint/recommended',
+        'plugin:react/recommended',
         'plugin:import/errors',
         'plugin:import/warnings',
         'airbnb-typescript',
     ],
-    plugins: ['@typescript-eslint', 'import'],
+    plugins: ['@typescript-eslint', 'import', 'react'],
     rules: {
-        // Your custom rules
-        'import/extensions': [
-            'error',
-            'ignorePackages',
-            { js: 'never', jsx: 'never', ts: 'never', tsx: 'never' },
-        ],
-        'import/no-extraneous-dependencies': ['error', { devDependencies: true }],
+        // Disable the rule as it's not needed in React 17+
+        'react/react-in-jsx-scope': 'off',
     },
     settings: {
+        react: {
+            version: 'detect', // Automatically detect the React version
+        },
         'import/resolver': {
-            typescript: {}, // This allows eslint to understand TypeScript path aliases
+            typescript: {},
         },
     },
 };
