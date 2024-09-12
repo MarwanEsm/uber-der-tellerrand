@@ -1,6 +1,6 @@
-import { MenuIcon, SearchIcon } from 'lucide-react';
-import { useState } from 'react';
-import logo from '../../../assets/Logo.png';
+import { MenuIcon, SearchIcon } from "lucide-react";
+import { useState } from "react";
+import logo from "../../../assets/Logo.png";
 
 interface MenuItem {
   label: string;
@@ -15,15 +15,20 @@ const Menu = ({ menuItems }: HeaderProps) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   return (
-    <header className="relative flex items-center justify-between py-2 px-4
-     bg-white shadow-md">
+    <header
+      className="relative flex items-center justify-between py-2 px-4
+     bg-white shadow-md"
+    >
       <div className="flex items-center">
         <img src={logo} alt="Logo" className="h-12" />
       </div>
 
       <div className="flex items-center space-x-4">
-        <button aria-label="Search" className="p-2 rounded-full
-         hover:bg-gray-100 focus:outline-none">
+        <button
+          aria-label="Search"
+          className="p-2 rounded-full
+         hover:bg-gray-100 focus:outline-none"
+        >
           <SearchIcon className="w-6 h-6 text-gray-600" />
         </button>
         <button
@@ -36,8 +41,10 @@ const Menu = ({ menuItems }: HeaderProps) => {
       </div>
 
       {isMenuOpen && (
-        <nav className="absolute top-full right-0 mt-[3px] mr-[2px] pr-8 pl-8
-         bg-white shadow-lg rounded-lg py-2 z-10 animate-fadeIn border border-gray-300">
+        <nav
+          className="absolute top-full right-0 mt-[3px] mr-[2px] pr-8 pl-8
+         bg-white shadow-lg rounded-lg py-2 z-10 animate-fadeIn border border-gray-300"
+        >
           <ul className="flex flex-col space-y-2">
             {menuItems.map((item, index) => (
               <li key={index}>

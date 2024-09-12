@@ -12,15 +12,17 @@ module.exports = {
         'plugin:import/errors',
         'plugin:import/warnings',
         'airbnb-typescript',
+        'plugin:prettier/recommended',  // Add this line
     ],
-    plugins: ['@typescript-eslint', 'import', 'react'],
+    plugins: ['@typescript-eslint', 'import', 'react', 'prettier'],
     rules: {
         'react/react-in-jsx-scope': 'off',
-        'max-len': ['error', { code: 90 }], // Sets max line length to 80 characters
+        'prettier/prettier': 'error', // Add this line to enforce Prettier rules
+        'max-len': ['error', { code: 90 }],
     },
     settings: {
         react: {
-            version: 'detect', // Automatically detect the React version
+            version: 'detect',
         },
         'import/resolver': {
             typescript: {},
