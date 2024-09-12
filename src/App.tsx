@@ -1,4 +1,6 @@
+// eslint-disable-next-line import/no-extraneous-dependencies
 import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
+import Footer from "./components/elements/menu/Footer";
 import Menu from "./components/elements/menu/Menu";
 import "./index.css";
 
@@ -15,12 +17,15 @@ const Registration = () => <h2>Registration Page</h2>;
 const App = () => {
   return (
     <Router>
-      <div>
+      <div className="flex flex-col min-h-screen">
         <Menu menuItems={menuItems} />
-        <Routes>
-          <Route path="/inventory" element={<Inventory />} />
-          <Route path="/registration" element={<Registration />} />
-        </Routes>
+        <main className="flex-grow">
+          <Routes>
+            <Route path="/inventory" element={<Inventory />} />
+            <Route path="/registration" element={<Registration />} />
+          </Routes>
+        </main>
+        <Footer />
       </div>
     </Router>
   );
