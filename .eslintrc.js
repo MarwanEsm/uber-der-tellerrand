@@ -12,13 +12,12 @@ module.exports = {
         'plugin:import/errors',
         'plugin:import/warnings',
         'airbnb-typescript',
-        'plugin:prettier/recommended',  // Add this line
+        'prettier' // Ensure Prettier rules are extended
     ],
     plugins: ['@typescript-eslint', 'import', 'react', 'prettier'],
     rules: {
         'react/react-in-jsx-scope': 'off',
-        'prettier/prettier': 'error', // Add this line to enforce Prettier rules
-        'max-len': ['error', { code: 90 }],
+        'prettier/prettier': 'off', // Turn off Prettier as an ESLint rule
     },
     settings: {
         react: {
