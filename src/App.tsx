@@ -4,10 +4,8 @@ import './index.css';
 
 // Example usage
 const menuItems = [
-  { label: 'Home', href: '/' },
-  { label: 'About', href: '/about' },
-  { label: 'Services', href: '/services' },
-  { label: 'Contact', href: '/contact' },
+  { label: 'Inventar', href: '/' },
+  { label: 'Anmeldung', href: '/about' },
 ];
 const App = () => {
   return (

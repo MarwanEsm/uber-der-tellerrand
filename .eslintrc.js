@@ -15,8 +15,8 @@ module.exports = {
     ],
     plugins: ['@typescript-eslint', 'import', 'react'],
     rules: {
-        // Disable the rule as it's not needed in React 17+
         'react/react-in-jsx-scope': 'off',
+        'max-len': ['error', { code: 90 }], // Sets max line length to 80 characters
     },
     settings: {
         react: {
