@@ -41,7 +41,7 @@ const Home = () => {
                 </Carousel>
             </div>
 
-            <div className="flex-grow h-1/2 flex justify-center items-center bg-gray-100">
+            <div className="flex-grow h-1/2 flex justify-center items-center">
                 <div>
                     <h1 className="text-center text-3xl font-bold mb-4 text-purple-600">Willkommen zurück!</h1>
                     <LoginForm />
