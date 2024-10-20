@@ -1,5 +1,5 @@
 import { Carousel } from 'react-responsive-carousel';
-import 'react-responsive-carousel/lib/styles/carousel.min.css'; // If using carousel
+import 'react-responsive-carousel/lib/styles/carousel.min.css';
 import Cooking from "../assets/Cooking.png";
 import Together from "../assets/Together.png";
 import Women from "../assets/Women.png";
@@ -8,7 +8,6 @@ import LoginForm from "../components/overlay/login/Login";
 const Home = () => {
     return (
         <div className="flex flex-col w-full h-screen">
-
             <div className="flex-grow h-1/2">
                 <Carousel
                     autoPlay
@@ -21,31 +20,32 @@ const Home = () => {
                     <div className="w-full h-full">
                         <img
                             src={Cooking}
-                            alt="Community cooking event"
+                            alt="Gemeinsames Kochen"
                             className="w-full h-full object-cover"
                         />
                     </div>
                     <div className="w-full h-full">
                         <img
                             src={Women}
-                            alt="Delicious food event"
+                            alt="Leckere Gerichte"
                             className="w-full h-full object-cover"
                         />
                     </div>
                     <div className="w-full h-full">
                         <img
                             src={Together}
-                            alt="Community meetup"
+                            alt="Gemeinschaftstreffen"
                             className="w-full h-full object-cover"
                         />
                     </div>
-
                 </Carousel>
             </div>
 
-
             <div className="flex-grow h-1/2 flex justify-center items-center bg-gray-100">
-                <LoginForm />
+                <div>
+                    <h1 className="text-center text-3xl font-bold mb-4 text-purple-600">Willkommen zurück!</h1>
+                    <LoginForm />
+                </div>
             </div>
         </div>
     );

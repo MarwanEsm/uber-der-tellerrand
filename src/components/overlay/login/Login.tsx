@@ -24,8 +24,6 @@ const LoginForm = () => {
             {!showForgotPasswordForm ? (
                 <div className="max-w-md mx-auto mt-5 p-6 bg-gradient-to-r from-purple-300 via-purple-400 to-purple-600 rounded-lg shadow-lg">
                     <form>
-                        <h4 className="text-center text-white text-lg font-semibold mb-6">Step Inside</h4>
-
                         <div className="mb-4 relative">
                             <input
                                 type="email"
