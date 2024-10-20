@@ -1,39 +1,50 @@
 import { Carousel } from 'react-responsive-carousel';
 import 'react-responsive-carousel/lib/styles/carousel.min.css'; // If using carousel
-import Halloween from "../assets/Halloween.png";
+import Cooking from "../assets/Cooking.png";
 import Together from "../assets/Together.png";
-import Women from "../assets/Women.jpg";
+import Women from "../assets/Women.png";
 import LoginForm from "../components/overlay/login/Login";
 
 const Home = () => {
     return (
-        <div className="relative w-full h-screen flex flex-col justify-center items-center">
-            {/* Image grid or carousel */}
-            <div className="absolute inset-0 overflow-hidden">
+        <div className="flex flex-col w-full h-screen">
+
+            <div className="flex-grow h-1/2">
                 <Carousel
                     autoPlay
                     infiniteLoop
-                    interval={4000}
+                    interval={2000}
                     showThumbs={false}
                     showStatus={false}
                     className="w-full h-full"
                 >
-                    {/* Replace with actual image URLs */}
-                    <div>
-                        <img src={Halloween} alt="Community cooking event" />
+                    <div className="w-full h-full">
+                        <img
+                            src={Cooking}
+                            alt="Community cooking event"
+                            className="w-full h-full object-cover"
+                        />
                     </div>
-                    <div>
-                        <img src={Women} alt="Delicious food event" />
+                    <div className="w-full h-full">
+                        <img
+                            src={Women}
+                            alt="Delicious food event"
+                            className="w-full h-full object-cover"
+                        />
                     </div>
-                    <div>
-                        <img src={Together} alt="Community meetup" />
+                    <div className="w-full h-full">
+                        <img
+                            src={Together}
+                            alt="Community meetup"
+                            className="w-full h-full object-cover"
+                        />
                     </div>
+
                 </Carousel>
             </div>
 
-            {/* Overlay with login form */}
-            <div className="relative z-10 bg-white/75 p-8 rounded-xl shadow-lg backdrop-blur-md max-w-lg mx-auto">
-                <h1 className="text-center text-3xl font-bold mb-4 text-purple-600">Welcome Back!</h1>
+
+            <div className="flex-grow h-1/2 flex justify-center items-center bg-gray-100">
                 <LoginForm />
             </div>
         </div>
