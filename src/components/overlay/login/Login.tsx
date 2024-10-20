@@ -1,15 +1,6 @@
 import { ChangeEvent, useState } from "react";
-// import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-// import { faEye, faEnvelope, faKey, faBuilding, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
-import styles from "./LoginForm.module.scss";
-
-// import { ILogin } from "@/types/forms";
-// import ForgotPassword from "../forgotPassword/ForgotPassword";
-// import Headline from "@/components/elements/headline/Headline";
 import { ILogin } from "../../../types/login";
 
-
-//TODO: validate the email address and password
 const LoginForm = () => {
     const [state, setState] = useState<ILogin>({
         email: "",
@@ -17,103 +8,70 @@ const LoginForm = () => {
     });
 
     const [passwordShown, setPasswordShown] = useState<boolean>(false);
-    const [showForgotPasswordForm, setShowForgotPasswordForm] = useState<boolean>(false)
+    const [showForgotPasswordForm, setShowForgotPasswordForm] = useState<boolean>(false);
 
     const togglePasswordVisibility = () => {
-        setPasswordShown(passwordShown ? false : true);
+        setPasswordShown(!passwordShown);
     };
 
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
         e.preventDefault();
         setState({ ...state, [e.target.name]: e.target.value });
     };
-    // const handleDropDown = (e) => {
-    //     e.preventDefault();
-    //     setState({ ...state, owner: e.target.value });
-    // };
 
-    // const submitDetails = (e) => {
-    //     e.preventDefault();
-    //     if (
-    //         state.email === "" ||
-    //         state.password === "" ||
-    //         state.confirmationPassword !== state.password ||
-    //         state.owner === "" ||
-    //         !checked
-    //     ) {
-    //         alert("Please fill in all required fields");
-    //     } else {
-    //         fetch(`${serverURL}auth/register`, {
-    //             method: "post",
-    //             headers: {
-    //                 Accept: "application/json, text/plain, */*",
-    //                 "Content-Type": "application/json",
-    //             },
-    //             body: JSON.stringify(state),
-    //         })
-    //             .then((res) => res.json())
-    //             .then((res) => {
-    //                 console.log(res);
-    //                 if (res.success) {
-    //                     alert(res.msg);
-    //                 } else {
-    //                     alert(res.msg);
-    //                 }
-    //             });
-    //     }
-    // };
+    return (
+        <>
+            {!showForgotPasswordForm ? (
+                <div className="max-w-md mx-auto mt-5 p-6 bg-gradient-to-r from-purple-300 via-purple-400 to-purple-600 rounded-lg shadow-lg">
+                    <form>
+                        <h4 className="text-center text-white text-lg font-semibold mb-6">Step Inside</h4>
 
-
-    return (<>
-        {!showForgotPasswordForm ?
-            <div className={styles.wrapper} >
-
-                <form action="post">
-                    <h4>Step Inside</h4>
-
-                    <div className={styles.inputContainer}>
-                        <div className={styles.icon}>
-                            {/* <FontAwesomeIcon icon={faEnvelope} /> */}
+                        <div className="mb-4 relative">
+                            <input
+                                type="email"
+                                placeholder="Email"
+                                name="email"
+                                onChange={handleChange}
+                                value={state.email}
+                                className="w-full px-4 py-2 bg-transparent border-b border-gray-300 text-white focus:outline-none"
+                            />
                         </div>
-                        <input
-                            autoComplete="off"
-                            type="email"
-                            placeholder="Email"
-                            name="email"
-                            onChange={(e) => handleChange(e)}
-                            value={state.email}
-                        />
-                    </div>
 
-                    <div className={styles.inputContainer}>
-                        <div className={styles.icon} onClick={togglePasswordVisibility}>
-                            {/* <FontAwesomeIcon icon={!passwordShown ? faEyeSlash : faEye} /> */}
+                        <div className="mb-4 relative">
+                            <input
+                                type={passwordShown ? "text" : "password"}
+                                placeholder="Create password"
+                                name="password"
+                                onChange={handleChange}
+                                value={state.password}
+                                className="w-full px-4 py-2 bg-transparent border-b border-gray-300 text-white focus:outline-none"
+                            />
+                            <button
+                                type="button"
+                                className="absolute right-0 top-0 mt-2 text-white"
+                                onClick={togglePasswordVisibility}
+                            >
+                                {passwordShown ? "Hide" : "Show"}
+                            </button>
                         </div>
-                        <input
-                            autoComplete="off"
-                            placeholder="Create password"
-                            type={passwordShown ? "text" : "password"}
-                            name="password"
-                            onChange={(e) => handleChange(e)}
-                            value={state.password}
-                        />
-                    </div>
+                    </form>
 
-                </form>
+                    <button className="block w-full bg-orange-500 text-white py-2 px-4 rounded-full hover:bg-orange-600 transition">
+                        Log in
+                    </button>
 
-                <button>log-in</button>
-                <label onClick={() => setShowForgotPasswordForm(!showForgotPasswordForm)}>
-                    Password forgotten ?
-                </label>
-            </div>
-            :
-            <div>Forget password</div>
-            // <ForgotPassword onClick={() => setShowForgotPasswordForm(false)} />
-        }
-    </>
-
+                    <label
+                        onClick={() => setShowForgotPasswordForm(!showForgotPasswordForm)}
+                        className="block mt-4 text-center text-white cursor-pointer hover:underline"
+                    >
+                        Password forgotten?
+                    </label>
+                </div>
+            ) : (
+                <div>Forget password</div>
+            )}
+        </>
     );
-}
-
+};
 
 export default LoginForm;
