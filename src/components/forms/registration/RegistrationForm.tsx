@@ -1,12 +1,20 @@
 import React, { ChangeEvent, FormEvent, useState } from "react";
 
+// Email validation function
+const validateEmail = (email: string) => {
+  const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  return emailPattern.test(email);
+};
+
+// Password validation function
+const validatePassword = (password: string) => {
+  const passwordPattern = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d@$!%*?&]{8,}$/;
+  return passwordPattern.test(password);
+};
+
 interface IRegistrationDetails {
   email: string;
   password: string;
-  confirmationPassword: string;
-  linkedIn: string;
-  github: string;
-  owner: string;
 }
 
 interface RegistrationFormProps {
@@ -19,12 +27,11 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({
   const [registrationDetails, setRegistrationDetails] =
     useState<IRegistrationDetails>({
       email: "",
-      password: "",
-      confirmationPassword: "",
-      linkedIn: "",
-      github: "",
-      owner: ""
+      password: ""
     });
+
+  const [emailError, setEmailError] = useState<string | null>(null);
+  const [passwordError, setPasswordError] = useState<string | null>(null);
 
   const handleChange = (
     e: ChangeEvent<HTMLInputElement | HTMLSelectElement>
@@ -37,13 +44,25 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
-    if (
-      registrationDetails.password !== registrationDetails.confirmationPassword
-    ) {
-      alert("Passwörter stimmen nicht überein!");
+    setEmailError(null);
+    setPasswordError(null);
+
+    // Validate email
+    if (!validateEmail(registrationDetails.email)) {
+      setEmailError("Bitte geben Sie eine gültige E-Mail-Adresse ein.");
       return;
     }
-    // Submit the form logic
+
+    // Validate password
+    if (!validatePassword(registrationDetails.password)) {
+      setPasswordError(
+        "Das Passwort muss mindestens 8 Zeichen lang sein, eine Zahl und einen Buchstaben enthalten."
+      );
+      return;
+    }
+
+    // If the form is valid, submit logic goes here
+    console.log("Registration successful!");
   };
 
   return (
@@ -56,8 +75,11 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({
             value={registrationDetails.email}
             onChange={handleChange}
             placeholder="E-Mail"
-            className="w-full px-4 py-2 bg-transparent border-b border-gray-300 text-white focus:outline-none placeholder-white"
+            className={`w-full px-4 py-2 bg-transparent border-b ${
+              emailError ? "border-red-500" : "border-gray-300"
+            } text-white focus:outline-none placeholder-white`}
           />
+          {emailError && <p className="text-red-500 text-sm">{emailError}</p>}
         </div>
         <div className="mb-4 relative">
           <input
@@ -66,9 +88,15 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({
             value={registrationDetails.password}
             onChange={handleChange}
             placeholder="Passwort"
-            className="w-full px-4 py-2 bg-transparent border-b border-gray-300 text-white focus:outline-none placeholder-white"
+            className={`w-full px-4 py-2 bg-transparent border-b ${
+              passwordError ? "border-red-500" : "border-gray-300"
+            } text-white focus:outline-none placeholder-white`}
           />
+          {passwordError && (
+            <p className="text-red-500 text-sm">{passwordError}</p>
+          )}
         </div>
+
         <button
           type="submit"
           className="block w-full bg-orange-500 text-white py-2 px-4 rounded-full hover:bg-orange-600 transition shadow-lg transform hover:scale-105 focus:outline-none focus:ring-4 focus:ring-orange-300"

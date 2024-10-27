@@ -1,4 +1,10 @@
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, FormEvent, useState } from "react";
+
+// Email validation function
+const validateEmail = (email: string) => {
+  const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  return emailPattern.test(email);
+};
 
 interface ILogin {
   email: string;
@@ -17,6 +23,7 @@ const LoginForm = (props: ILoginProps) => {
   });
 
   const [passwordShown, setPasswordShown] = useState<boolean>(false);
+  const [emailError, setEmailError] = useState<string | null>(null);
 
   const togglePasswordVisibility = () => {
     setPasswordShown(!passwordShown);
@@ -26,9 +33,23 @@ const LoginForm = (props: ILoginProps) => {
     setState({ ...state, [e.target.name]: e.target.value });
   };
 
+  const handleSubmit = (e: FormEvent) => {
+    e.preventDefault();
+    setEmailError(null); // Reset email error
+
+    // Validate email
+    if (!validateEmail(state.email)) {
+      setEmailError("Bitte geben Sie eine gültige E-Mail-Adresse ein.");
+      return;
+    }
+
+    // If the email is valid, proceed with login logic
+    console.log("Login successful!");
+  };
+
   return (
     <div className="max-w-md w-full mx-auto p-6 bg-gradient-to-r from-purple-300 via-purple-400 to-purple-600 rounded-lg shadow-lg min-h-[245px] flex flex-col justify-center">
-      <form>
+      <form onSubmit={handleSubmit}>
         <div className="mb-4 relative">
           <input
             type="email"
@@ -36,8 +57,11 @@ const LoginForm = (props: ILoginProps) => {
             name="email"
             onChange={handleChange}
             value={state.email}
-            className="w-full px-4 py-2 bg-transparent border-b border-gray-300 text-white focus:outline-none placeholder-white"
+            className={`w-full px-4 py-2 bg-transparent border-b ${
+              emailError ? "border-red-500" : "border-gray-300"
+            } text-white focus:outline-none placeholder-white`}
           />
+          {emailError && <p className="text-red-500 text-sm">{emailError}</p>}
         </div>
         <div className="mb-4 relative">
           <input
@@ -56,10 +80,13 @@ const LoginForm = (props: ILoginProps) => {
             {passwordShown ? "Verbergen" : "Anzeigen"}
           </button>
         </div>
+        <button
+          type="submit"
+          className="block w-full bg-orange-500 text-white py-2 px-4 rounded-full hover:bg-orange-600 transition shadow-lg transform hover:scale-105 focus:outline-none focus:ring-4 focus:ring-orange-300"
+        >
+          Einloggen
+        </button>
       </form>
-      <button className="block w-full bg-orange-500 text-white py-2 px-4 rounded-full hover:bg-orange-600 transition shadow-lg transform hover:scale-105 focus:outline-none focus:ring-4 focus:ring-orange-300">
-        Einloggen
-      </button>
       <div className="mt-4 text-center">
         <button
           onClick={props.setShowForgotPasswordForm}
