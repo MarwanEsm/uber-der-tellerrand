@@ -1,9 +1,9 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
-import { createUserWithEmailAndPassword } from "firebase/auth"; // Import Firebase auth method
-import React, { FormEvent } from "react";
+import { createUserWithEmailAndPassword } from "firebase/auth";
+import React, { FormEvent, useState } from "react";
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { useDispatch, useSelector } from "react-redux";
-import { auth } from "../../../firebase"; // Import the initialized Firebase `auth`
+import { auth } from "../../../firebase";
 import { resetForm, updateField } from "../../../redux/slices/formSlice";
 import { AppDispatch, RootState } from "../../../redux/store";
 
@@ -16,6 +16,8 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({
 }) => {
   const dispatch = useDispatch<AppDispatch>();
   const form = useSelector((state: RootState) => state.form);
+  const [message, setMessage] = useState<string | null>(null); // For toast message
+  const [isSuccess, setIsSuccess] = useState<boolean | null>(null); // For success/failure tracking
 
   const handleChange =
     (field: keyof typeof form) =>
@@ -27,7 +29,6 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({
     e.preventDefault();
 
     try {
-      // Use the initialized `auth` object from Firebase configuration
       const userCredential = await createUserWithEmailAndPassword(
         auth,
         form.email,
@@ -35,15 +36,36 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({
       );
       console.log("User registered:", userCredential.user);
 
-      alert("User registered successfully!");
+      // Set success message and status
+      setMessage("Registrierung erfolgreich!");
+      setIsSuccess(true);
       dispatch(resetForm());
+
+      // Hide the message after 3 seconds
+      setTimeout(() => setMessage(null), 3000);
     } catch (error: any) {
-      alert(`Error during registration: ${error.message}`);
+      // Set failure message and status
+      setMessage(`Registrierung fehlgeschlagen: ${error.message}`);
+      setIsSuccess(false);
+
+      // Hide the message after 3 seconds
+      setTimeout(() => setMessage(null), 3000);
     }
   };
 
   return (
     <div className="max-w-md w-full mx-auto p-6 bg-gradient-to-r from-purple-300 via-purple-400 to-purple-600 rounded-lg shadow-lg min-h-[245px] flex flex-col justify-center">
+      {/* Toast Notification */}
+      {message && (
+        <div
+          className={`fixed top-4 right-4 p-4 rounded shadow-lg text-white ${
+            isSuccess ? "bg-green-500" : "bg-red-500"
+          }`}
+        >
+          {message}
+        </div>
+      )}
+
       <form onSubmit={handleSubmit}>
         <div className="mb-4 relative">
           <input
