@@ -58,8 +58,10 @@ const LoginForm = (props: ILoginProps) => {
 
       // Redirect to /events after successful login
       navigate("/events");
-    } catch (error: any) {
-      setLoginError("Login fehlgeschlagen: " + error.message);
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        setLoginError("Login fehlgeschlagen: " + error.message);
+      }
     }
   };
 

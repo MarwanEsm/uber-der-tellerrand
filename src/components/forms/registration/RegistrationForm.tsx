@@ -45,9 +45,11 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({
       setTimeout(() => {
         setShowLoginForm();
       }, 3000); // 3 seconds delay to show the message before redirecting
-    } catch (error: any) {
+    } catch (error: unknown) {
       // Set failure message and status
-      setMessage(`Registrierung fehlgeschlagen: ${error.message}`);
+      if (error instanceof Error) {
+        setMessage(`Registrierung fehlgeschlagen: ${error.message}`);
+      }
       setIsSuccess(false);
 
       // Hide the message after 3 seconds
