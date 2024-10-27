@@ -17,15 +17,16 @@ module.exports = {
     plugins: ['@typescript-eslint', 'import', 'react', 'prettier'],
     rules: {
         'react/react-in-jsx-scope': 'off',
-        'prettier/prettier': 'off', // Turn off Prettier as an ESLint rule
+        'prettier/prettier': 'off',
         'import/no-extraneous-dependencies': [
             'error',
             {
                 devDependencies: [
-                    '**/*.test.{ts,tsx}', // Test files
-                    '**/setupTests.{ts,tsx}', // Setup files
-                    '**/src/screens/Home.tsx', // Home component
+                    '**/*.test.{ts,tsx}', // Test files can import devDependencies
+                    '**/setupTests.{ts,tsx}', // Setup files can import devDependencies
                 ],
+                optionalDependencies: false, // Ensure optional dependencies aren't imported by accident
+                peerDependencies: false, // Ensure peer dependencies aren't imported by accident
             },
         ],
     },
@@ -34,7 +35,7 @@ module.exports = {
             version: 'detect',
         },
         'import/resolver': {
-            typescript: {}, // This ensures TypeScript imports are resolved
+            typescript: {}, // Ensure TypeScript imports are resolved
         },
     },
 };

@@ -1,6 +1,7 @@
 import React, { FormEvent } from "react";
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { useDispatch, useSelector } from "react-redux";
+import { auth } from "../../../firebase"; // Import Firebase auth
 import { resetForm, updateField } from "../../../redux/slices/formSlice";
 import { AppDispatch, RootState } from "../../../redux/store";
 
@@ -20,14 +21,29 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({
       dispatch(updateField({ field, value: e.target.value }));
     };
 
-  const handleSubmit = (e: FormEvent) => {
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     if (form.password !== form.confirmationPassword) {
       alert("Passwörter stimmen nicht überein!");
       return;
     }
-    console.log("Form data:", form);
-    dispatch(resetForm());
+
+    try {
+      // Register the user with Firebase Authentication
+      const userCredential = await auth.createUserWithEmailAndPassword(
+        form.email,
+        form.password
+      );
+      console.log("User registered:", userCredential.user);
+
+      // After successful registration, you might want to store user info in Firestore
+      // Example: await firestore.collection('users').doc(userCredential.user.uid).set({...});
+
+      alert("User registered successfully!");
+      dispatch(resetForm());
+    } catch (error: any) {
+      alert(`Error during registration: ${error.message}`);
+    }
   };
 
   return (
