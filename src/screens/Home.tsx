@@ -17,22 +17,28 @@ const Home = () => {
           showStatus={false}
           className="w-full h-[100px]"
         >
-          <img
-            src={Women}
-            alt="Leckere Gerichte"
-            className="w-full h-[50vh]object-cover"
-          />
+          <div className="w-full h-[50vh]">
+            <img
+              src={Women}
+              alt="Leckere Gerichte"
+              className="w-full h-full object-cover"
+            />
+          </div>
 
-          <img
-            src={Together}
-            alt="Gemeinschaftstreffen"
-            className="w-full h-[50vh]object-cover"
-          />
-          <img
-            src={Community}
-            alt="Gemeinschaftstreffen"
-            className="w-full h-[50vh]object-cover"
-          />
+          <div className="w-full h-[50vh]">
+            <img
+              src={Community}
+              alt="Gemeinschaftstreffen"
+              className="w-full h-full object-cover"
+            />
+          </div>
+          <div className="w-full h-[50vh]">
+            <img
+              src={Together}
+              alt="Gemeinschaftstreffen"
+              className="w-full h-full object-cover"
+            />
+          </div>
         </Carousel>
       </div>
 

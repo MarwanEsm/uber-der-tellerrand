@@ -17,7 +17,7 @@ const Menu = ({ menuItems }: HeaderProps) => {
   return (
     <header
       className="relative flex items-center justify-between py-2 px-4
-     bg-white shadow-md"
+     bg-white"
     >
       <div className="flex items-center">
         <img src={logo} alt="Logo" className="h-12" />

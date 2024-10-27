@@ -31,7 +31,6 @@ const ResetPasswordForm: React.FC<ResetPasswordFormProps> = ({
         Passwort zurücksetzen
       </button>
 
-      {/* Back to Login button */}
       <div className="mt-4 text-center">
         <button
           onClick={setShowLoginForm}
