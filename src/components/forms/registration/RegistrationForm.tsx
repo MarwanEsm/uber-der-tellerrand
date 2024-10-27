@@ -1,7 +1,8 @@
+// eslint-disable-next-line import/no-extraneous-dependencies
+import { createUserWithEmailAndPassword, getAuth } from "firebase/auth"; // Import Firebase auth methods
 import React, { FormEvent } from "react";
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { useDispatch, useSelector } from "react-redux";
-import { auth } from "../../../firebase"; // Import Firebase auth
 import { resetForm, updateField } from "../../../redux/slices/formSlice";
 import { AppDispatch, RootState } from "../../../redux/store";
 
@@ -29,15 +30,14 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({
     }
 
     try {
-      // Register the user with Firebase Authentication
-      const userCredential = await auth.createUserWithEmailAndPassword(
+      const auth = getAuth(); // Initialize Firebase auth
+      // Register the user with Firebase Authentication using modular SDK method
+      const userCredential = await createUserWithEmailAndPassword(
+        auth,
         form.email,
         form.password
       );
       console.log("User registered:", userCredential.user);
-
-      // After successful registration, you might want to store user info in Firestore
-      // Example: await firestore.collection('users').doc(userCredential.user.uid).set({...});
 
       alert("User registered successfully!");
       dispatch(resetForm());
@@ -69,16 +69,7 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({
             className="w-full px-4 py-2 bg-transparent border-b border-gray-300 text-white focus:outline-none placeholder-white"
           />
         </div>
-        <div className="mb-4 relative">
-          <input
-            type="password"
-            name="confirmationPassword"
-            value={form.confirmationPassword}
-            onChange={handleChange("confirmationPassword")}
-            placeholder="Passwort wiederholen"
-            className="w-full px-4 py-2 bg-transparent border-b border-gray-300 text-white focus:outline-none placeholder-white"
-          />
-        </div>
+
         <button
           type="submit"
           className="block w-full bg-orange-500 text-white py-2 px-4 rounded-full hover:bg-orange-600 transition shadow-lg transform hover:scale-105 focus:outline-none focus:ring-4 focus:ring-orange-300"

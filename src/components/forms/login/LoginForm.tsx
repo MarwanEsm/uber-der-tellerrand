@@ -1,3 +1,5 @@
+// eslint-disable-next-line import/no-extraneous-dependencies
+import { getAuth, signInWithEmailAndPassword } from "firebase/auth"; // Import Firebase auth methods
 import { ChangeEvent, FormEvent, useState } from "react";
 
 // Email validation function
@@ -5,7 +7,6 @@ const validateEmail = (email: string) => {
   const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   return emailPattern.test(email);
 };
-
 interface ILogin {
   email: string;
   password: string;
@@ -24,6 +25,7 @@ const LoginForm = (props: ILoginProps) => {
 
   const [passwordShown, setPasswordShown] = useState<boolean>(false);
   const [emailError, setEmailError] = useState<string | null>(null);
+  const [loginError, setLoginError] = useState<string | null>(null); // For Firebase login errors
 
   const togglePasswordVisibility = () => {
     setPasswordShown(!passwordShown);
@@ -33,9 +35,10 @@ const LoginForm = (props: ILoginProps) => {
     setState({ ...state, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e: FormEvent) => {
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     setEmailError(null); // Reset email error
+    setLoginError(null); // Reset login error
 
     // Validate email
     if (!validateEmail(state.email)) {
@@ -43,8 +46,22 @@ const LoginForm = (props: ILoginProps) => {
       return;
     }
 
-    // If the email is valid, proceed with login logic
-    console.log("Login successful!");
+    // Firebase Authentication
+    const auth = getAuth();
+    try {
+      // Attempt to sign in with email and password
+      const userCredential = await signInWithEmailAndPassword(
+        auth,
+        state.email,
+        state.password
+      );
+      console.log("Login successful:", userCredential.user);
+
+      // Proceed with login flow (e.g., redirect to a dashboard or show success message)
+    } catch (error: any) {
+      // Handle Firebase errors
+      setLoginError("Login fehlgeschlagen: " + error.message);
+    }
   };
 
   return (
@@ -80,6 +97,7 @@ const LoginForm = (props: ILoginProps) => {
             {passwordShown ? "Verbergen" : "Anzeigen"}
           </button>
         </div>
+        {loginError && <p className="text-red-500 text-sm">{loginError}</p>}
         <button
           type="submit"
           className="block w-full bg-orange-500 text-white py-2 px-4 rounded-full hover:bg-orange-600 transition shadow-lg transform hover:scale-105 focus:outline-none focus:ring-4 focus:ring-orange-300"
@@ -107,3 +125,14 @@ const LoginForm = (props: ILoginProps) => {
 };
 
 export default LoginForm;
+
+// import { auth } from "../firebase";
+
+// const handleSignOut = async () => {
+//   try {
+//     await auth.signOut();
+//     alert("Signed out successfully!");
+//   } catch (err) {
+//     console.error(err);
+//   }
+// };
