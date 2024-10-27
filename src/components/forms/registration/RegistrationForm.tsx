@@ -1,8 +1,9 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
-import { createUserWithEmailAndPassword, getAuth } from "firebase/auth"; // Import Firebase auth methods
+import { createUserWithEmailAndPassword } from "firebase/auth"; // Import Firebase auth method
 import React, { FormEvent } from "react";
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { useDispatch, useSelector } from "react-redux";
+import { auth } from "../../../firebase"; // Import the initialized Firebase `auth`
 import { resetForm, updateField } from "../../../redux/slices/formSlice";
 import { AppDispatch, RootState } from "../../../redux/store";
 
@@ -24,14 +25,9 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
-    if (form.password !== form.confirmationPassword) {
-      alert("Passwörter stimmen nicht überein!");
-      return;
-    }
 
     try {
-      const auth = getAuth(); // Initialize Firebase auth
-      // Register the user with Firebase Authentication using modular SDK method
+      // Use the initialized `auth` object from Firebase configuration
       const userCredential = await createUserWithEmailAndPassword(
         auth,
         form.email,

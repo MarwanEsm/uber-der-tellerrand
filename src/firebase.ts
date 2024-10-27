@@ -1,14 +1,12 @@
-// Import the necessary functions from the Modular Firebase SDK
-// eslint-disable-next-line import/no-extraneous-dependencies
-import { getAnalytics } from "firebase/analytics";
+// src/firebase.ts or src/firebase.js
+
+// Import required functions from the SDK
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { initializeApp } from "firebase/app";
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { getAuth } from "firebase/auth";
-// eslint-disable-next-line import/no-extraneous-dependencies
-import { getFirestore } from "firebase/firestore";
 
-// Your Firebase configuration
+// Your web app's Firebase configuration
 const firebaseConfig = {
   apiKey: "AIzaSyCte-L6_MUxDfURAiuK3ZPvo3PbuscZSPI",
   authDomain: "uber-der-tellerrand.firebaseapp.com",
@@ -22,10 +20,6 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 
-// Initialize Firebase services using modular imports
-export const auth = getAuth(app);
-export const firestore = getFirestore(app);
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-const analytics = getAnalytics(app);
-
+// Export initialized auth instance
+export const auth = getAuth(app); // Make sure you export this
 export default app;
