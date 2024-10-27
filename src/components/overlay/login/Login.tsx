@@ -62,26 +62,25 @@ const LoginForm = () => {
           </button>
 
           <div className="mt-4 text-center">
-            <label
+            <button
               onClick={() => setShowForgotPasswordForm(true)}
-              className="text-white cursor-pointer hover:underline"
+              className="text-white underline hover:no-underline hover:text-orange-500 transition-all"
             >
               Passwort vergessen?
-            </label>
+            </button>
             <span className="text-white mx-2">|</span>
-            <label
+            <button
               onClick={() => setShowRegistrationForm(true)}
-              className="text-white cursor-pointer hover:underline"
+              className="text-white underline hover:no-underline hover:text-orange-500 transition-all"
             >
               Jetzt registrieren
-            </label>
+            </button>
           </div>
         </div>
       )}
 
       {showForgotPasswordForm && (
         <div className="max-w-md mx-auto mt-5 p-6 bg-gradient-to-r from-purple-300 via-purple-400 to-purple-600 rounded-lg shadow-lg">
-          <h2 className="text-white text-center mb-4">Passwort zurücksetzen</h2>
           <div className="mb-4 relative">
             <input
               type="email"
@@ -92,9 +91,12 @@ const LoginForm = () => {
               className="w-full px-4 py-2 bg-transparent border-b border-gray-300 text-white focus:outline-none placeholder-white"
             />
           </div>
+          <button className="block w-full bg-orange-500 text-white py-2 px-4 rounded-full hover:bg-orange-600 transition mt-4">
+            Passwort zurücksetzen
+          </button>
           <button
             onClick={() => setShowForgotPasswordForm(false)}
-            className="block w-full bg-orange-500 text-white py-2 px-4 rounded-full hover:bg-orange-600 transition mt-4"
+            className="block w-full bg-purple-500 text-white py-2 px-4 rounded-full hover:bg-purple-600 transition mt-4"
           >
             Zurück zum Einloggen
           </button>
