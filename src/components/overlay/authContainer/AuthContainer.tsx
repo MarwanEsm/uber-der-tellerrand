@@ -21,7 +21,9 @@ const AuthContainer = () => {
           />
         )}
         {activeForm === "register" && <RegistrationForm />}
-        {activeForm === "reset" && <ResetPasswordForm />}
+        {activeForm === "reset" && (
+          <ResetPasswordForm setShowLoginForm={() => setActiveForm("login")} />
+        )}
 
         <div className="mt-4 text-center">
           {activeForm !== "login" && (

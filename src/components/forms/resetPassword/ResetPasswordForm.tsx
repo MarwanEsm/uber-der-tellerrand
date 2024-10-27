@@ -1,6 +1,12 @@
-import { ChangeEvent, useState } from "react";
+import React, { ChangeEvent, useState } from "react";
 
-const ResetPasswordForm = () => {
+interface ResetPasswordFormProps {
+  setShowLoginForm: () => void;
+}
+
+const ResetPasswordForm: React.FC<ResetPasswordFormProps> = ({
+  setShowLoginForm
+}) => {
   const [email, setEmail] = useState<string>("");
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -24,6 +30,16 @@ const ResetPasswordForm = () => {
       <button className="block w-full bg-orange-500 text-white py-2 px-4 rounded-full hover:bg-orange-600 transition shadow-lg transform hover:scale-105 focus:outline-none focus:ring-4 focus:ring-orange-300">
         Passwort zurücksetzen
       </button>
+
+      {/* Back to Login button */}
+      <div className="mt-4 text-center">
+        <button
+          onClick={setShowLoginForm}
+          className="text-white underline hover:no-underline hover:text-orange-500 transition-all"
+        >
+          Zurück zum Einloggen
+        </button>
+      </div>
     </div>
   );
 };
