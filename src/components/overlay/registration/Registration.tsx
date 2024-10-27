@@ -1,5 +1,4 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
-import { faGithub, faLinkedin } from "@fortawesome/free-brands-svg-icons";
 // eslint-disable-next-line import/no-extraneous-dependencies
 import {
   faEnvelope,
@@ -132,39 +131,6 @@ const RegistrationForm = () => {
             required
           />
         </div>
-
-        <div className="relative mb-6">
-          <select
-            name="owner"
-            defaultValue="Choose..."
-            onChange={handleChange}
-            className="w-full bg-transparent border-none text-white text-sm focus:outline-none"
-          >
-            <option value="candidate">Candidate</option>
-            <option value="employer">Employer</option>
-          </select>
-        </div>
-
-        <ul className="list-none ml-[-24px]">
-          <li className="mb-6 flex items-center">
-            <FontAwesomeIcon icon={faLinkedin} className="text-white" />
-            <input
-              type="text"
-              placeholder="LinkedIn"
-              onChange={handleChange}
-              className="ml-2 w-full bg-transparent border-none text-[#e9e9e9] focus:outline-none"
-            />
-          </li>
-          <li className="mb-6 flex items-center">
-            <FontAwesomeIcon icon={faGithub} className="text-white" />
-            <input
-              type="text"
-              placeholder="Github"
-              onChange={handleChange}
-              className="ml-2 w-full bg-transparent border-none text-[#e9e9e9] focus:outline-none"
-            />
-          </li>
-        </ul>
 
         <div className="flex items-center mb-5 ml-2">
           <input
