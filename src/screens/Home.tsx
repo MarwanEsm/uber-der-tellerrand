@@ -3,8 +3,8 @@ import "react-responsive-carousel/lib/styles/carousel.min.css";
 import Community from "../assets/Community.png";
 import Together from "../assets/Together.png";
 import Women from "../assets/Women.png";
-import LoginForm from "../components/overlay/login/Login";
-// const imageClassName = "w-full h-[calc(50vh)]"
+import AuthContainer from "../components/overlay/authContainer/AuthContainer";
+
 const Home = () => {
   return (
     <div className="flex flex-col w-full h-screen overflow-hidden">
@@ -41,9 +41,9 @@ const Home = () => {
           <h1 className="text-center text-3xl font-bold mb-4 text-purple-600">
             Willkommen zurück!
           </h1>
-          <LoginForm />
         </div>
       </div>
+      <AuthContainer />
     </div>
   );
 };
