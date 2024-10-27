@@ -1,6 +1,7 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth"; // Import Firebase auth methods
 import { ChangeEvent, FormEvent, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 // Email validation function
 const validateEmail = (email: string) => {
@@ -26,7 +27,7 @@ const LoginForm = (props: ILoginProps) => {
   const [passwordShown, setPasswordShown] = useState<boolean>(false);
   const [emailError, setEmailError] = useState<string | null>(null);
   const [loginError, setLoginError] = useState<string | null>(null); // For Firebase login errors
-
+  const navigate = useNavigate();
   const togglePasswordVisibility = () => {
     setPasswordShown(!passwordShown);
   };
@@ -46,10 +47,8 @@ const LoginForm = (props: ILoginProps) => {
       return;
     }
 
-    // Firebase Authentication
     const auth = getAuth();
     try {
-      // Attempt to sign in with email and password
       const userCredential = await signInWithEmailAndPassword(
         auth,
         state.email,
@@ -57,9 +56,9 @@ const LoginForm = (props: ILoginProps) => {
       );
       console.log("Login successful:", userCredential.user);
 
-      // Proceed with login flow (e.g., redirect to a dashboard or show success message)
+      // Redirect to /events after successful login
+      navigate("/events");
     } catch (error: any) {
-      // Handle Firebase errors
       setLoginError("Login fehlgeschlagen: " + error.message);
     }
   };
@@ -125,14 +124,3 @@ const LoginForm = (props: ILoginProps) => {
 };
 
 export default LoginForm;
-
-// import { auth } from "../firebase";
-
-// const handleSignOut = async () => {
-//   try {
-//     await auth.signOut();
-//     alert("Signed out successfully!");
-//   } catch (err) {
-//     console.error(err);
-//   }
-// };
