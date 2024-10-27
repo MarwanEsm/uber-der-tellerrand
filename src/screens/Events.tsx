@@ -7,31 +7,31 @@ const events = [
   {
     id: 1,
     date: "2024-11-01",
-    location: "Berlin, Germany",
+    location: "Berlin, Deutschland",
     photo: "https://via.placeholder.com/150"
   },
   {
     id: 2,
     date: "2024-11-10",
-    location: "Munich, Germany",
+    location: "München, Deutschland",
     photo: "https://via.placeholder.com/150"
   },
   {
     id: 3,
     date: "2024-11-15",
-    location: "Frankfurt, Germany",
+    location: "Frankfurt, Deutschland",
     photo: "https://via.placeholder.com/150"
   },
   {
     id: 4,
     date: "2024-11-20",
-    location: "Hamburg, Germany",
+    location: "Hamburg, Deutschland",
     photo: "https://via.placeholder.com/150"
   },
   {
     id: 5,
     date: "2024-12-01",
-    location: "Cologne, Germany",
+    location: "Köln, Deutschland",
     photo: "https://via.placeholder.com/150"
   }
 ];
@@ -43,22 +43,24 @@ const Events: React.FC = () => {
   const handleLogout = async () => {
     try {
       await signOut(auth); // Call Firebase's signOut method
-      console.log("User logged out");
+      console.log("Benutzer wurde abgemeldet");
       navigate("/"); // Redirect to home or login page after logout
     } catch (error) {
-      console.error("Error logging out:", error);
+      console.error("Fehler beim Abmelden:", error);
     }
   };
 
   return (
     <div className="max-w-4xl mx-auto p-6">
       <div className="flex justify-between items-center mb-8">
-        <h1 className="text-3xl font-bold">Welcome to Events</h1>
+        <label className="text-2xl color-[#e0bc4d] font-bold">
+          Veranstaltungen
+        </label>
         <button
           onClick={handleLogout}
-          className="bg-red-500 text-white py-2 px-4 rounded hover:bg-red-600 transition"
+          className="bg-gradient-to-r from-purple-300 via-purple-400 to-purple-600 text-white py-2 px-4 rounded hover:scale-105 transition"
         >
-          Logout
+          Abmelden
         </button>
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
