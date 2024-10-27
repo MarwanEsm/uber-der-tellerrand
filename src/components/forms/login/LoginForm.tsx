@@ -26,7 +26,7 @@ const LoginForm = (props: ILoginProps) => {
   };
 
   return (
-    <div className="max-w-md mx-auto p-6 bg-gradient-to-r from-purple-300 via-purple-400 to-purple-600 rounded-lg shadow-lg">
+    <div className="max-w-md w-full mx-auto p-6 bg-gradient-to-r from-purple-300 via-purple-400 to-purple-600 rounded-lg shadow-lg">
       <form>
         <div className="mb-4 relative">
           <input

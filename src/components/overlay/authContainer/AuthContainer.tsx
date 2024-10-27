@@ -9,7 +9,7 @@ const AuthContainer = () => {
   );
 
   return (
-    <div className="min-h-screen flex flex-col justify-center">
+    <div className="min-h-screen w-[95%] flex flex-col justify-center">
       <div className="container mx-auto mt-[100px]">
         <h1 className="text-center text-3xl font-bold mb-4 text-purple-600">
           Willkommen zurück!
