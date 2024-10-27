@@ -9,50 +9,48 @@ const AuthContainer = () => {
   );
 
   return (
-    <div className="min-h-screen w-[95%] flex flex-col justify-center">
-      <div className="container mx-auto mt-[100px]">
-        <h1 className="text-center text-3xl font-bold mb-4 text-purple-600">
-          Willkommen zurück!
-        </h1>
-        {activeForm === "login" && (
-          <LoginForm
-            setShowForgotPasswordForm={() => setActiveForm("reset")}
-            setShowRegistrationForm={() => setActiveForm("register")}
-          />
-        )}
-        {activeForm === "register" && (
-          <RegistrationForm setShowLoginForm={() => setActiveForm("login")} />
-        )}
-        {activeForm === "reset" && (
-          <ResetPasswordForm setShowLoginForm={() => setActiveForm("login")} />
-        )}
+    <div className="w-[95%]">
+      <h1 className="text-center text-3xl font-bold mb-4 text-purple-600">
+        Willkommen zurück!
+      </h1>
+      {activeForm === "login" && (
+        <LoginForm
+          setShowForgotPasswordForm={() => setActiveForm("reset")}
+          setShowRegistrationForm={() => setActiveForm("register")}
+        />
+      )}
+      {activeForm === "register" && (
+        <RegistrationForm setShowLoginForm={() => setActiveForm("login")} />
+      )}
+      {activeForm === "reset" && (
+        <ResetPasswordForm setShowLoginForm={() => setActiveForm("login")} />
+      )}
 
-        <div className="mt-4 text-center">
-          {activeForm !== "login" && (
-            <button
-              onClick={() => setActiveForm("login")}
-              className="text-white underline hover:text-orange-500 transition-all"
-            >
-              Einloggen
-            </button>
-          )}
-          {activeForm !== "register" && (
-            <button
-              onClick={() => setActiveForm("register")}
-              className="text-white underline hover:text-orange-500 transition-all ml-4"
-            >
-              Registrieren
-            </button>
-          )}
-          {activeForm !== "reset" && (
-            <button
-              onClick={() => setActiveForm("reset")}
-              className="text-white underline hover:text-orange-500 transition-all ml-4"
-            >
-              Passwort Zurücksetzen
-            </button>
-          )}
-        </div>
+      <div className="mt-4 text-center">
+        {activeForm !== "login" && (
+          <button
+            onClick={() => setActiveForm("login")}
+            className="text-white underline hover:text-orange-500 transition-all"
+          >
+            Einloggen
+          </button>
+        )}
+        {activeForm !== "register" && (
+          <button
+            onClick={() => setActiveForm("register")}
+            className="text-white underline hover:text-orange-500 transition-all ml-4"
+          >
+            Registrieren
+          </button>
+        )}
+        {activeForm !== "reset" && (
+          <button
+            onClick={() => setActiveForm("reset")}
+            className="text-white underline hover:text-orange-500 transition-all ml-4"
+          >
+            Passwort Zurücksetzen
+          </button>
+        )}
       </div>
     </div>
   );

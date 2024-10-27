@@ -7,42 +7,42 @@ import AuthContainer from "../components/overlay/authContainer/AuthContainer";
 
 const Home = () => {
   return (
-    <div className="flex flex-col w-full h-screen overflow-hidden">
-      <div className="flex-grow">
+    <div className="flex flex-col w-full overflow-hidden">
+      <div>
         <Carousel
           autoPlay
           infiniteLoop
           interval={2000}
           showThumbs={false}
           showStatus={false}
-          className="w-full h-[100px]"
+          className="w-full"
         >
-          <div className="w-full h-[50vh]">
+          <div className="w-full">
             <img
               src={Women}
               alt="Leckere Gerichte"
-              className="w-full h-[90%] object-cover"
+              className="w-full object-cover"
             />
           </div>
 
-          <div className="w-full h-[50vh]">
+          <div className="w-full">
             <img
               src={Community}
               alt="Gemeinschaftstreffen"
-              className="w-full h-full object-cover"
+              className="w-full object-cover"
             />
           </div>
-          <div className="w-full h-[50vh]">
+          <div className="w-full">
             <img
               src={Together}
               alt="Gemeinschaftstreffen"
-              className="w-full h-full object-cover"
+              className="w-ful object-cover"
             />
           </div>
         </Carousel>
       </div>
 
-      <div className="flex-grow flex justify-center items-center mt-[20px]">
+      <div className="flex justify-center items-center">
         <AuthContainer />
       </div>
     </div>
