@@ -26,10 +26,6 @@ Welcome to Uber Der Tellerrand, a web application designed to help users manage 
 
 - Netlify
 
-## Project Structure
-
-├── public │ └── index.html ├── src │ ├── assets # Images and assets for the application │ ├── components │ │ ├── elements # Reusable UI elements like Footer, Menu │ │ ├── forms # Login, Registration, and Reset Password Forms │ │ └── overlay # AuthContainer for managing form transitions │ ├── redux # Redux state management │ ├── screens # Main pages like Home, Events, Inventory │ ├── types # TypeScript type definitions │ ├── App.tsx # Main app component │ ├── index.tsx # Entry point for the application │ └── firebase.ts # Firebase configuration and initialization ├── .eslintrc.js # ESLint configuration ├── package.json # Project dependencies and scripts ├── tailwind.config.js # Tailwind CSS configuration └── tsconfig.json # TypeScript configuration
-
 ## Getting Started
 
 To get a local copy up and running, follow these steps.
