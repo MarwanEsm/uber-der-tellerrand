@@ -20,7 +20,9 @@ const AuthContainer = () => {
             setShowRegistrationForm={() => setActiveForm("register")}
           />
         )}
-        {activeForm === "register" && <RegistrationForm />}
+        {activeForm === "register" && (
+          <RegistrationForm setShowLoginForm={() => setActiveForm("login")} />
+        )}
         {activeForm === "reset" && (
           <ResetPasswordForm setShowLoginForm={() => setActiveForm("login")} />
         )}

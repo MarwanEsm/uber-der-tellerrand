@@ -1,4 +1,4 @@
-import { ChangeEvent, FormEvent, useState } from "react";
+import React, { ChangeEvent, FormEvent, useState } from "react";
 
 interface IRegistrationDetails {
   email: string;
@@ -9,7 +9,13 @@ interface IRegistrationDetails {
   owner: string;
 }
 
-const RegistrationForm = () => {
+interface RegistrationFormProps {
+  setShowLoginForm: () => void; // Prop to navigate back to login
+}
+
+const RegistrationForm: React.FC<RegistrationFormProps> = ({
+  setShowLoginForm
+}) => {
   const [registrationDetails, setRegistrationDetails] =
     useState<IRegistrationDetails>({
       email: "",
@@ -80,6 +86,16 @@ const RegistrationForm = () => {
           Registrieren
         </button>
       </form>
+
+      {/* Go Back to Login button */}
+      <div className="mt-4 text-center">
+        <button
+          onClick={setShowLoginForm}
+          className="text-white underline hover:no-underline hover:text-orange-500 transition-all"
+        >
+          Zurück zum Einloggen
+        </button>
+      </div>
     </div>
   );
 };
