@@ -21,7 +21,7 @@ const Home = () => {
             <img
               src={Women}
               alt="Leckere Gerichte"
-              className="w-full h-full object-cover"
+              className="w-full h-[90%] object-cover"
             />
           </div>
 
