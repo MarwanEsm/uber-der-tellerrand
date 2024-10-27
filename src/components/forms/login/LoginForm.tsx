@@ -5,7 +5,11 @@ interface ILogin {
   password: string;
 }
 
-const LoginForm = () => {
+interface ILoginProps {
+  setShowForgotPasswordForm: () => void;
+  setShowRegistrationForm: () => void;
+}
+const LoginForm = (props: ILoginProps) => {
   const [state, setState] = useState<ILogin>({
     email: "",
     password: ""
@@ -23,7 +27,6 @@ const LoginForm = () => {
 
   return (
     <div className="max-w-md mx-auto p-6 bg-gradient-to-r from-purple-300 via-purple-400 to-purple-600 rounded-lg shadow-lg">
-      <h2 className="text-white text-lg">Einloggen</h2>
       <form>
         <div className="mb-4 relative">
           <input
@@ -56,6 +59,21 @@ const LoginForm = () => {
       <button className="block w-full bg-orange-500 text-white py-2 px-4 rounded-full hover:bg-orange-600 transition shadow-lg transform hover:scale-105 focus:outline-none focus:ring-4 focus:ring-orange-300">
         Einloggen
       </button>
+      <div className="mt-4 text-center">
+        <button
+          onClick={props.setShowForgotPasswordForm}
+          className="text-white underline hover:no-underline hover:text-orange-500 transition-all"
+        >
+          Passwort vergessen?
+        </button>
+        <span className="text-white mx-2">|</span>
+        <button
+          onClick={props.setShowRegistrationForm}
+          className="text-white underline hover:no-underline hover:text-orange-500 transition-all"
+        >
+          Jetzt registrieren
+        </button>
+      </div>
     </div>
   );
 };

@@ -9,7 +9,6 @@ const ResetPasswordForm = () => {
 
   return (
     <div className="max-w-md mx-auto p-6 bg-gradient-to-r from-purple-300 via-purple-400 to-purple-600 rounded-lg shadow-lg">
-      <h2 className="text-white text-lg">Passwort Zurücksetzen</h2>
       <form>
         <div className="mb-4 relative">
           <input

@@ -36,14 +36,9 @@ const Home = () => {
         </Carousel>
       </div>
 
-      <div className="flex-grow flex justify-center items-center">
-        <div>
-          <h1 className="text-center text-3xl font-bold mb-4 text-purple-600">
-            Willkommen zurück!
-          </h1>
-        </div>
+      <div className="flex-grow flex justify-center items-center mt-[20px]">
+        <AuthContainer />
       </div>
-      <AuthContainer />
     </div>
   );
 };
