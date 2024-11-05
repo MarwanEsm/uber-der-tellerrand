@@ -1,10 +1,9 @@
-// src/firebase.ts or src/firebase.js
+// src/firebase.ts
 
 // Import required functions from the SDK
-// eslint-disable-next-line import/no-extraneous-dependencies
 import { initializeApp } from "firebase/app";
-// eslint-disable-next-line import/no-extraneous-dependencies
 import { getAuth } from "firebase/auth";
+import { getFirestore } from "firebase/firestore"; // Import Firestore
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
@@ -19,7 +18,6 @@ const firebaseConfig = {
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
-
-// Export initialized auth instance
-export const auth = getAuth(app); // Make sure you export this
+export const auth = getAuth(app);
+export const db = getFirestore(app); // Initialize and export Firestore
 export default app;

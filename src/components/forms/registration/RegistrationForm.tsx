@@ -1,9 +1,10 @@
-// eslint-disable-next-line import/no-extraneous-dependencies
+// src/components/RegistrationForm.tsx
+
 import { createUserWithEmailAndPassword } from "firebase/auth";
+import { doc, setDoc } from "firebase/firestore"; // Firestore functions for setting data
 import React, { FormEvent, useState } from "react";
-// eslint-disable-next-line import/no-extraneous-dependencies
 import { useDispatch, useSelector } from "react-redux";
-import { auth } from "../../../firebase";
+import { auth, db } from "../../../firebase"; // Import Firestore instance
 import { resetForm, updateField } from "../../../redux/slices/formSlice";
 import { AppDispatch, RootState } from "../../../redux/store";
 
@@ -29,12 +30,19 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({
     e.preventDefault();
 
     try {
+      // Register the user with Firebase Authentication
       const userCredential = await createUserWithEmailAndPassword(
         auth,
         form.email,
         form.password
       );
-      console.log("User registered:", userCredential.user);
+      const user = userCredential.user;
+
+      // Add user profile data to Firestore with the firstLogin flag
+      await setDoc(doc(db, "users", user.uid), {
+        email: form.email,
+        firstLogin: true // Set firstLogin to true initially
+      });
 
       // Set success message and status
       setMessage("Registrierung erfolgreich! Sie können sich jetzt einloggen.");

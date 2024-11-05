@@ -1,174 +1,145 @@
-import { useState } from "react";
-import { Carousel } from "react-responsive-carousel";
-import "react-responsive-carousel/lib/styles/carousel.min.css";
-const EventForm = () => {
-  const [responses, setResponses] = useState({
-    consent: false,
+// src/components/EventForm.tsx
+
+import { getAuth } from "firebase/auth";
+import { doc, updateDoc } from "firebase/firestore"; // Firestore functions
+import React, { FormEvent, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { db } from "../firebase";
+
+const EventForm: React.FC = () => {
+  const [formData, setFormData] = useState({
     name: "",
     email: "",
-    allergy: "",
+    allergyInfo: "",
     instrument: "",
     leadRecipe: "",
     discoveryMethod: ""
   });
+  const [submitMessage, setSubmitMessage] = useState<string | null>(null); // Message for submission status
+  const navigate = useNavigate();
 
-  const handleChange = (e: any) => {
-    const { name, value, type, checked } = e.target;
-    setResponses((prev) => ({
-      ...prev,
-      [name]: type === "checkbox" ? checked : value
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
+    const { name, value } = e.target;
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: value
     }));
   };
 
+  const handleSubmit = async (e: FormEvent) => {
+    e.preventDefault();
+
+    try {
+      const auth = getAuth();
+      const user = auth.currentUser;
+
+      if (user) {
+        // Update firstLogin flag to false in Firestore
+        const userDocRef = doc(db, "users", user.uid);
+        await updateDoc(userDocRef, { firstLogin: false });
+
+        // Optional: Store additional form data (e.g., name, allergyInfo)
+        await updateDoc(userDocRef, {
+          name: formData.name,
+          email: formData.email,
+          allergyInfo: formData.allergyInfo,
+          instrument: formData.instrument,
+          leadRecipe: formData.leadRecipe,
+          discoveryMethod: formData.discoveryMethod
+        });
+
+        setSubmitMessage("Anmeldeformular erfolgreich abgeschickt!"); // Show success message
+        setTimeout(() => navigate("/events"), 3000); // Redirect to /events after 3 seconds
+      }
+    } catch (error) {
+      console.error("Error updating document:", error);
+      setSubmitMessage(
+        "Fehler beim Absenden des Formulars. Bitte versuchen Sie es erneut."
+      );
+    }
+  };
+
   return (
-    <div className="max-w-lg w-full mx-auto p-6 bg-gradient-to-r from-purple-300 via-purple-400 to-purple-600 rounded-lg shadow-lg text-white">
-      <h2 className="text-center text-2xl mb-6">
-        IT IS SOMMER TIME!!! 08.06.2024 um 16 Uhr
-      </h2>
-      <Carousel showThumbs={false} showStatus={false}>
-        {/* Introduction Slide */}
-        <div className="p-4 text-center">
-          <p>Liebe*r Teilnehmende,</p>
-          <p>
-            wie schön, dass du mit DABEI SEIN möchtest! Um Dir einen Platz zu
-            sichern, füll bitte dieses Formular aus. Daraufhin wirst Du von uns
-            eine Nachricht mit allen weiteren Infos bekommen.
-          </p>
-          <p>Wir freuen uns auf Dich!</p>
-          <p>Dein Über den Tellerrand-Team Osnabrück</p>
+    <div className="ml-[10px] mr-[10px] max-w-lg p-6 bg-gradient-to-r from-purple-300 via-purple-400 to-purple-600 rounded-lg shadow-lg text-white">
+      <h2 className="text-center text-2xl mb-6">Anmeldeformular</h2>
+      {submitMessage && (
+        <div className="mb-4 text-center text-sm p-2 bg-green-500 rounded">
+          {submitMessage}
         </div>
-
-        {/* Consent Slide */}
-        <div className="p-4 text-center">
-          <p>
-            Um den Kontakt zu erleichtern und unsere Aktivitäten besser zu
-            organisieren, benötigen wir deine persönlichen Informationen sowie
-            deine E-Mail-Adresse.
-          </p>
-          <label className="flex items-center justify-center space-x-2 mt-4">
-            <input
-              type="checkbox"
-              name="consent"
-              checked={responses.consent}
-              onChange={handleChange}
-              className="mr-2"
-            />
-            <span>Ja, ich erlaube die Nutzung meiner Daten</span>
-          </label>
-        </div>
-
-        {/* Name & Email Slide */}
-        <div className="p-4">
+      )}
+      <form onSubmit={handleSubmit}>
+        <div className="mb-4">
           <label className="block mb-2">Name *</label>
           <input
             type="text"
             name="name"
-            value={responses.name}
+            value={formData.name}
             onChange={handleChange}
-            className="w-full px-4 py-2 bg-transparent border-b border-gray-300 text-white placeholder-white"
+            className="w-full px-4 py-2 bg-transparent border-b border-gray-300 text-white focus:outline-none placeholder-white"
             placeholder="Dein Name"
+            required
           />
-
-          <label className="block mt-4 mb-2">E-Mail *</label>
+        </div>
+        <div className="mb-4">
+          <label className="block mb-2">E-Mail *</label>
           <input
             type="email"
             name="email"
-            value={responses.email}
+            value={formData.email}
             onChange={handleChange}
-            className="w-full px-4 py-2 bg-transparent border-b border-gray-300 text-white placeholder-white"
+            className="w-full px-4 py-2 bg-transparent border-b border-gray-300 text-white focus:outline-none placeholder-white"
             placeholder="Deine E-Mail-Adresse"
+            required
           />
         </div>
-
-        {/* Allergy Question Slide */}
-        <div className="p-4">
-          <p>Hast Du eine Allergie gegen Lebensmittel? *</p>
-          <label className="flex items-center space-x-2 mt-2">
-            <input
-              type="radio"
-              name="allergy"
-              value="Nein"
-              onChange={handleChange}
-              checked={responses.allergy === "Nein"}
-            />
-            <span>Nein</span>
+        <div className="mb-4">
+          <label className="block mb-2">
+            Hast Du eine Allergie gegen Lebensmittel?
           </label>
-          <label className="flex items-center space-x-2 mt-2">
-            <input
-              type="radio"
-              name="allergy"
-              value="Ja"
-              onChange={handleChange}
-              checked={responses.allergy === "Ja"}
-            />
-            <span>Ja, ich werde die Allergie im Kommentar nennen</span>
-          </label>
+          <input
+            type="text"
+            name="allergyInfo"
+            value={formData.allergyInfo}
+            onChange={handleChange}
+            className="w-full px-4 py-2 bg-transparent border-b border-gray-300 text-white focus:outline-none placeholder-white"
+            placeholder="Schreibe hier deine Allergie"
+          />
         </div>
-
-        {/* Instrument Question Slide */}
-        <div className="p-4">
-          <p>
-            Wenn Du ein Instrument spielst und Lust hast, deine Musik mit uns zu
-            teilen, bring bitte dein Instrument mit.
-          </p>
-          <label className="flex items-center space-x-2 mt-2">
-            <input
-              type="radio"
-              name="instrument"
-              value="Nein"
-              onChange={handleChange}
-              checked={responses.instrument === "Nein"}
-            />
-            <span>Nein</span>
+        <div className="mb-4">
+          <label className="block mb-2">
+            Welches Instrument bringst Du mit?
           </label>
-          <label className="flex items-center space-x-2 mt-2">
-            <input
-              type="radio"
-              name="instrument"
-              value="Ja"
-              onChange={handleChange}
-              checked={responses.instrument === "Ja"}
-            />
-            <span>Ja, ich bringe mein Instrument mit</span>
-          </label>
+          <input
+            type="text"
+            name="instrument"
+            value={formData.instrument}
+            onChange={handleChange}
+            className="w-full px-4 py-2 bg-transparent border-b border-gray-300 text-white focus:outline-none placeholder-white"
+            placeholder="Instrument"
+          />
         </div>
-
-        {/* Recipe Lead Question Slide */}
-        <div className="p-4">
-          <p>
-            Hast du Lust, bei der nächsten Kochveranstaltung ein Rezept
-            einzubringen und eine eigene Kochstation zu leiten?
-          </p>
-          <label className="flex items-center space-x-2 mt-2">
-            <input
-              type="radio"
-              name="leadRecipe"
-              value="Nein"
-              onChange={handleChange}
-              checked={responses.leadRecipe === "Nein"}
-            />
-            <span>Nein</span>
+        <div className="mb-4">
+          <label className="block mb-2">
+            Möchtest Du ein Rezept einbringen und eine Kochstation leiten?
           </label>
-          <label className="flex items-center space-x-2 mt-2">
-            <input
-              type="radio"
-              name="leadRecipe"
-              value="Ja"
-              onChange={handleChange}
-              checked={responses.leadRecipe === "Ja"}
-            />
-            <span>Ja, gerne</span>
-          </label>
+          <input
+            type="text"
+            name="leadRecipe"
+            value={formData.leadRecipe}
+            onChange={handleChange}
+            className="w-full px-4 py-2 bg-transparent border-b border-gray-300 text-white focus:outline-none placeholder-white"
+            placeholder="Ja oder Nein"
+          />
         </div>
-
-        {/* Discovery Method Slide */}
-        <div className="p-4">
-          <p>Wie hast Du von Über den Tellerrand Osnabrück erfahren?</p>
+        <div className="mb-4">
+          <label className="block mb-2">Wie hast Du von uns erfahren?</label>
           <select
             name="discoveryMethod"
-            value={responses.discoveryMethod}
+            value={formData.discoveryMethod}
             onChange={handleChange}
-            className="w-full px-4 py-2 bg-transparent border-b border-gray-300 text-white placeholder-white"
+            className="w-full px-4 py-2 bg-transparent border-b border-gray-300 text-white focus:outline-none placeholder-white"
           >
             <option value="">Bitte auswählen</option>
             <option value="Flyer">Über einen Flyer</option>
@@ -178,13 +149,13 @@ const EventForm = () => {
             <option value="Other">Sonstiges</option>
           </select>
         </div>
-      </Carousel>
-      <button
-        type="button"
-        className="block w-full bg-orange-500 text-white py-2 px-4 mt-6 rounded-full hover:bg-orange-600 transition shadow-lg transform hover:scale-105 focus:outline-none focus:ring-4 focus:ring-orange-300"
-      >
-        Formular absenden
-      </button>
+        <button
+          type="submit"
+          className="block w-full bg-orange-500 text-white py-2 px-4 rounded-full hover:bg-orange-600 transition shadow-lg transform hover:scale-105 focus:outline-none focus:ring-4 focus:ring-orange-300"
+        >
+          Formular absenden
+        </button>
+      </form>
     </div>
   );
 };

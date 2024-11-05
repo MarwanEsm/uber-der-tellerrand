@@ -1,13 +1,14 @@
-// eslint-disable-next-line import/no-extraneous-dependencies
-import { getAuth, signInWithEmailAndPassword } from "firebase/auth"; // Import Firebase auth methods
+import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+import { doc, getDoc } from "firebase/firestore";
 import { ChangeEvent, FormEvent, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { db } from "../../../firebase"; // Your Firebase configuration file
 
-// Email validation function
 const validateEmail = (email: string) => {
   const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   return emailPattern.test(email);
 };
+
 interface ILogin {
   email: string;
   password: string;
@@ -19,15 +20,12 @@ interface ILoginProps {
 }
 
 const LoginForm = (props: ILoginProps) => {
-  const [state, setState] = useState<ILogin>({
-    email: "",
-    password: ""
-  });
-
+  const [state, setState] = useState<ILogin>({ email: "", password: "" });
   const [passwordShown, setPasswordShown] = useState<boolean>(false);
   const [emailError, setEmailError] = useState<string | null>(null);
-  const [loginError, setLoginError] = useState<string | null>(null); // For Firebase login errors
+  const [loginError, setLoginError] = useState<string | null>(null);
   const navigate = useNavigate();
+
   const togglePasswordVisibility = () => {
     setPasswordShown(!passwordShown);
   };
@@ -38,10 +36,9 @@ const LoginForm = (props: ILoginProps) => {
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
-    setEmailError(null); // Reset email error
-    setLoginError(null); // Reset login error
+    setEmailError(null);
+    setLoginError(null);
 
-    // Validate email
     if (!validateEmail(state.email)) {
       setEmailError("Bitte geben Sie eine gültige E-Mail-Adresse ein.");
       return;
@@ -54,10 +51,19 @@ const LoginForm = (props: ILoginProps) => {
         state.email,
         state.password
       );
-      console.log("Login successful:", userCredential.user);
+      const userId = userCredential.user.uid;
 
-      // Redirect to /events after successful login
-      navigate("/events");
+      // Retrieve firstLogin flag from Firestore
+      const userDoc = await getDoc(doc(db, "users", userId));
+      const userData = userDoc.data();
+
+      if (userData && userData.firstLogin) {
+        // Redirect to /form if first login
+        navigate("/form");
+      } else {
+        // Otherwise, redirect to /events
+        navigate("/events");
+      }
     } catch (error: unknown) {
       if (error instanceof Error) {
         setLoginError("Login fehlgeschlagen: " + error.message);
