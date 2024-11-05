@@ -6,9 +6,9 @@ import Footer from "./components/elements/Footer/Footer";
 import Menu from "./components/elements/menu/Menu";
 import "./index.css";
 import store from "./redux/store";
+import EventForm from "./screens/EventForm";
 import Events from "./screens/Events";
 import Home from "./screens/Home";
-
 // Example usage
 const menuItems = [
   { label: "Inventar", href: "/inventory" },
@@ -28,6 +28,7 @@ const App = () => {
           <main className="flex-grow">
             <Routes>
               <Route path="/" element={<Home />} />
+              <Route path="/form" element={<EventForm />} />
               <Route path="/inventory" element={<Inventory />} />
               <Route path="/registration" element={<Registration />} />
               <Route path="/events" element={<Events />} />
