@@ -62,7 +62,7 @@ const EventForm: React.FC = () => {
     }
   };
 
-  const nextSlide = () => setCurrentSlide((prev) => Math.min(prev + 1, 5));
+  const nextSlide = () => setCurrentSlide((prev) => Math.min(prev + 1, 7));
   const prevSlide = () => setCurrentSlide((prev) => Math.max(prev - 1, 0));
 
   // Individual button disable conditions for each slide
@@ -89,6 +89,12 @@ const EventForm: React.FC = () => {
     }
     if (slideIndex === 5) {
       return formData.leadRecipe === "Not";
+    }
+    if (slideIndex === 6) {
+      return (
+        formData.discoveryMethod === "Other" &&
+        formData.discoveryDetails.trim() === ""
+      );
     }
     return false;
   };
@@ -124,9 +130,7 @@ const EventForm: React.FC = () => {
           </div>
           <button
             onClick={nextSlide}
-            className={
-              "mt-4 px-5 py-3 rounded-full font-semibold  bg-orange-500 text-white hover:bg-orange-600 transition focus:outline-none"
-            }
+            className="mt-4 px-5 py-3 rounded-full font-semibold bg-orange-500 text-white hover:bg-orange-600 transition focus:outline-none"
           >
             Weiter
           </button>
@@ -187,13 +191,16 @@ const EventForm: React.FC = () => {
         </div>
 
         <div className="py-8">
-          <label className="block mb-4 text-white">
-            <span className="text-red-500 mr-2">*</span>Welches Instrument
-            bringst Du mit?
-          </label>
+          <p className="text-white mb-4">
+            Bei unserem Koch-Event möchten wir gemeinsam gutes Essen genießen,
+            aber vor allem wollen wir einander kennenlernen. Wenn Du ein
+            Instrument spielst und Lust hast, deine Musik mit uns zu teilen,
+            bring bitte dein <strong>Musikinstrument</strong> mit, damit wir
+            während des Kochevents gemeinsam Musik genießen können.
+          </p>
           <p className="text-white mb-4">
             Wenn du ein Instrument mitbringen möchtest, schreib bitte unter
-            Sonstiges, welches Musikinstrument du mitbringst.
+            Sonstiges, welches <strong>Musikinstrument</strong> Du mitbringst:
           </p>
           <div>
             <label className="flex items-center mb-2">
@@ -216,7 +223,7 @@ const EventForm: React.FC = () => {
                 onChange={handleChange}
                 className="mr-2"
               />
-              Sonstiges:
+              Other:
             </label>
             <input
               type="text"
@@ -224,7 +231,7 @@ const EventForm: React.FC = () => {
               name="instrumentDetails"
               value={formData.instrumentDetails}
               onChange={handleChange}
-              placeholder="Bitte geben Sie Ihr Instrument ein"
+              placeholder="Musikinstrument eingeben"
               className="px-3 py-2 w-full mt-2 border border-white rounded bg-transparent text-white placeholder-white focus:outline-none"
             />
           </div>
@@ -241,7 +248,132 @@ const EventForm: React.FC = () => {
           </button>
         </div>
 
-        {/* Additional slides with separate buttons can be added similarly */}
+        {/* Slide for Recipe Inquiry */}
+        <div className="py-8">
+          <label className="block mb-4 text-white">
+            Hast du Lust, bei der nächsten Kochveranstaltung ein Rezept
+            einzubringen und eine eigene Kochstation zu leiten?
+          </label>
+          <div>
+            <label className="flex items-center mb-2">
+              <input
+                type="radio"
+                name="leadRecipe"
+                value="Nein"
+                checked={formData.leadRecipe === "Nein"}
+                onChange={handleChange}
+                className="mr-2"
+              />
+              Nein
+            </label>
+            <label className="flex items-center mb-2">
+              <input
+                type="radio"
+                name="leadRecipe"
+                value="Ja, gerne"
+                checked={formData.leadRecipe === "Ja, gerne"}
+                onChange={handleChange}
+                className="mr-2"
+              />
+              Ja, gerne
+            </label>
+          </div>
+          <button
+            onClick={nextSlide}
+            disabled={isSlideButtonDisabled(5)}
+            className={`mt-4 px-5 py-3 rounded-full font-semibold ${
+              isSlideButtonDisabled(5)
+                ? "bg-gray-400 text-white"
+                : "bg-orange-500 text-white hover:bg-orange-600 transition focus:outline-none"
+            }`}
+          >
+            Weiter
+          </button>
+        </div>
+
+        {/* Slide for Discovery Method */}
+        <div className="py-8">
+          <label className="block mb-4 text-white">
+            Wie hast Du von Über den Tellerrand Osnabrück erfahren?
+          </label>
+          <div>
+            <label className="flex items-center mb-2">
+              <input
+                type="radio"
+                name="discoveryMethod"
+                value="Flyer"
+                checked={formData.discoveryMethod === "Flyer"}
+                onChange={handleChange}
+                className="mr-2"
+              />
+              Über einen Flyer
+            </label>
+            <label className="flex items-center mb-2">
+              <input
+                type="radio"
+                name="discoveryMethod"
+                value="Freund"
+                checked={formData.discoveryMethod === "Freund"}
+                onChange={handleChange}
+                className="mr-2"
+              />
+              Über einen Freund
+            </label>
+            <label className="flex items-center mb-2">
+              <input
+                type="radio"
+                name="discoveryMethod"
+                value="Besucher"
+                checked={formData.discoveryMethod === "Besucher"}
+                onChange={handleChange}
+                className="mr-2"
+              />
+              Ich war schon dabei
+            </label>
+            <label className="flex items-center mb-2">
+              <input
+                type="radio"
+                name="discoveryMethod"
+                value="SocialMedia"
+                checked={formData.discoveryMethod === "SocialMedia"}
+                onChange={handleChange}
+                className="mr-2"
+              />
+              Über Social Media
+            </label>
+            <label className="flex items-center mb-2">
+              <input
+                type="radio"
+                name="discoveryMethod"
+                value="Other"
+                checked={formData.discoveryMethod === "Other"}
+                onChange={handleChange}
+                className="mr-2"
+              />
+              Sonstiges:
+            </label>
+            <input
+              type="text"
+              disabled={formData.discoveryMethod !== "Other"}
+              name="discoveryDetails"
+              value={formData.discoveryDetails}
+              onChange={handleChange}
+              placeholder="Bitte angeben"
+              className="px-3 py-2 w-full mt-2 border border-white rounded bg-transparent text-white placeholder-white focus:outline-none"
+            />
+          </div>
+          <button
+            onClick={nextSlide}
+            disabled={isSlideButtonDisabled(6)}
+            className={`mt-4 px-5 py-3 rounded-full font-semibold ${
+              isSlideButtonDisabled(6)
+                ? "bg-gray-400 text-white"
+                : "bg-orange-500 text-white hover:bg-orange-600 transition focus:outline-none"
+            }`}
+          >
+            Weiter
+          </button>
+        </div>
 
         <div className="p-8 text-center">
           <h3 className="text-2xl font-semibold mb-4 text-white">
