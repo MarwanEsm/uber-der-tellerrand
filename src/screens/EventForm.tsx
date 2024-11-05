@@ -10,22 +10,21 @@ const EventFormCarousel: React.FC = () => {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
-    allergyInfo: "",
-    instrument: "",
-    leadRecipe: "",
-    discoveryMethod: ""
+    allergyInfo: "Nein",
+    instrument: "Nein",
+    leadRecipe: "Nein",
+    discoveryMethod: "",
+    consent: false
   });
   const [submitMessage, setSubmitMessage] = useState<string | null>(null);
   const navigate = useNavigate();
   const [currentSlide, setCurrentSlide] = useState(0);
 
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
-  ) => {
-    const { name, value } = e.target;
+  const handleChange = (e: any) => {
+    const { name, value, type, checked } = e.target;
     setFormData((prevData) => ({
       ...prevData,
-      [name]: value
+      [name]: type === "checkbox" ? checked : value
     }));
   };
 
@@ -60,11 +59,22 @@ const EventFormCarousel: React.FC = () => {
     }
   };
 
-  const nextSlide = () => setCurrentSlide((prev) => Math.min(prev + 1, 4));
+  const nextSlide = () => setCurrentSlide((prev) => Math.min(prev + 1, 5));
   const prevSlide = () => setCurrentSlide((prev) => Math.max(prev - 1, 0));
 
+  const isNextDisabled = () => {
+    switch (currentSlide) {
+      case 2:
+        return !formData.name || !formData.email;
+      case 1:
+        return !formData.consent;
+      default:
+        return false;
+    }
+  };
+
   return (
-    <div className="max-w-lg w-full mx-auto p-6 bg-white rounded-lg shadow-lg text-gray-800">
+    <div className="max-w-lg w-full mx-auto p-6 bg-gradient-to-r from-purple-300 via-purple-400 to-purple-600 rounded-lg shadow-lg text-white">
       <Carousel
         selectedItem={currentSlide}
         showThumbs={false}
@@ -76,10 +86,10 @@ const EventFormCarousel: React.FC = () => {
       >
         {/* Slide 1 */}
         <div className="p-6 text-center">
-          <h2 className="text-3xl font-bold text-purple-700 mb-2">
+          <h2 className="text-3xl font-bold text-white mb-2">
             IT IS SOMMER TIME!!! 08.06.2024 um 16 Uhr
           </h2>
-          <p className="text-center text-gray-700 mb-6">
+          <p className="text-center text-white mb-6">
             Liebe*r Teilnehmende,
             <br />
             <br />
@@ -94,9 +104,9 @@ const EventFormCarousel: React.FC = () => {
           </p>
         </div>
 
-        {/* Slide 2 */}
+        {/* Slide 2 - Consent */}
         <div className="p-6">
-          <p className="text-gray-700 mb-4">
+          <p className="text-white mb-4">
             Um den Kontakt zu erleichtern und unsere Aktivitäten besser zu
             organisieren, benötigen wir deine persönlichen Informationen sowie
             deine E-Mail-Adresse.
@@ -112,11 +122,12 @@ const EventFormCarousel: React.FC = () => {
             uns per E-Mail zu kontaktieren, um Änderungen oder Löschungen deiner
             Daten zu beantragen.
           </p>
-          <label className="flex items-center space-x-2 mt-4">
+          <label className="flex items-center space-x-2 mt-4 text-white">
             <input
               type="checkbox"
               name="consent"
               onChange={handleChange}
+              checked={formData.consent}
               className="form-checkbox h-5 w-5 text-orange-500"
               required
             />
@@ -126,8 +137,10 @@ const EventFormCarousel: React.FC = () => {
 
         {/* Slide 3 - Name and Email */}
         <div className="p-6">
-          <h3 className="text-xl font-semibold mb-4">Anmeldeformular</h3>
-          <p className="text-gray-700 mb-6">
+          <h3 className="text-xl font-semibold text-white mb-4">
+            Anmeldeformular
+          </h3>
+          <p className="text-white mb-6">
             Die Schritte zur Registrierung:
             <br />
             1. Ausfüllen des Anmeldeformulars.
@@ -135,23 +148,23 @@ const EventFormCarousel: React.FC = () => {
             2. Warten auf die Bestätigungs-E-Mail (innerhalb von 7 Tagen nach
             Absendung des Formulars)
           </p>
-          <label className="block mb-2">Name *</label>
+          <label className="block mb-2 text-white">Name *</label>
           <input
             type="text"
             name="name"
             value={formData.name}
             onChange={handleChange}
-            className="w-full px-4 py-2 mb-4 border rounded focus:outline-none"
+            className="w-full px-4 py-2 mb-4 border border-white rounded bg-transparent focus:outline-none text-white placeholder-white"
             placeholder="Dein Name"
             required
           />
-          <label className="block mb-2">E-Mail *</label>
+          <label className="block mb-2 text-white">E-Mail *</label>
           <input
             type="email"
             name="email"
             value={formData.email}
             onChange={handleChange}
-            className="w-full px-4 py-2 mb-4 border rounded focus:outline-none"
+            className="w-full px-4 py-2 mb-4 border border-white rounded bg-transparent focus:outline-none text-white placeholder-white"
             placeholder="Deine E-Mail-Adresse"
             required
           />
@@ -159,56 +172,102 @@ const EventFormCarousel: React.FC = () => {
 
         {/* Slide 4 - Allergy & Instrument */}
         <div className="p-6">
-          <label className="block mb-2">
+          <label className="block mb-2 text-white">
             Hast Du eine Allergie gegen Lebensmittel?
           </label>
-          <input
-            type="text"
-            name="allergyInfo"
-            value={formData.allergyInfo}
-            onChange={handleChange}
-            className="w-full px-4 py-2 mb-4 border rounded focus:outline-none"
-            placeholder="Schreibe hier deine Allergie"
-          />
-          <label className="block mb-2">
+          <div className="flex items-center space-x-2">
+            <label>
+              <input
+                type="radio"
+                name="allergyInfo"
+                value="Nein"
+                checked={formData.allergyInfo === "Nein"}
+                onChange={handleChange}
+              />
+              Nein
+            </label>
+            <label>
+              <input
+                type="radio"
+                name="allergyInfo"
+                value="Other"
+                checked={formData.allergyInfo === "Other"}
+                onChange={handleChange}
+              />
+              Other
+            </label>
+          </div>
+
+          <label className="block mt-4 mb-2 text-white">
             Welches Instrument bringst Du mit?
           </label>
-          <input
-            type="text"
-            name="instrument"
-            value={formData.instrument}
-            onChange={handleChange}
-            className="w-full px-4 py-2 border rounded focus:outline-none"
-            placeholder="Instrument"
-          />
+          <div className="flex items-center space-x-2">
+            <label>
+              <input
+                type="radio"
+                name="instrument"
+                value="Nein"
+                checked={formData.instrument === "Nein"}
+                onChange={handleChange}
+              />
+              Nein
+            </label>
+            <label>
+              <input
+                type="radio"
+                name="instrument"
+                value="Other"
+                checked={formData.instrument === "Other"}
+                onChange={handleChange}
+              />
+              Other
+            </label>
+          </div>
         </div>
 
         {/* Slide 5 - Recipe & Discovery */}
         <div className="p-6">
-          <label className="block mb-2">
+          <label className="block mb-2 text-white">
             Möchtest Du ein Rezept einbringen und eine Kochstation leiten?
           </label>
-          <input
-            type="text"
-            name="leadRecipe"
-            value={formData.leadRecipe}
-            onChange={handleChange}
-            className="w-full px-4 py-2 mb-4 border rounded focus:outline-none"
-            placeholder="Ja oder Nein"
-          />
-          <label className="block mb-2">
+          <div className="flex items-center space-x-2">
+            <label>
+              <input
+                type="radio"
+                name="leadRecipe"
+                value="Nein"
+                checked={formData.leadRecipe === "Nein"}
+                onChange={handleChange}
+              />
+              Nein
+            </label>
+            <label>
+              <input
+                type="radio"
+                name="leadRecipe"
+                value="Ja, gerne"
+                checked={formData.leadRecipe === "Ja, gerne"}
+                onChange={handleChange}
+              />
+              Ja, gerne
+            </label>
+          </div>
+
+          <label className="block mt-4 mb-2 text-white">
             Wie hast Du von Über den Tellerrand Osnabrück erfahren?
           </label>
           <select
             name="discoveryMethod"
             value={formData.discoveryMethod}
             onChange={handleChange}
-            className="w-full px-4 py-2 border rounded focus:outline-none"
+            className="w-full px-4 py-2 border border-white rounded bg-transparent focus:outline-none text-white placeholder-white"
           >
             <option value="">Bitte auswählen</option>
             <option value="Flyer">Über einen Flyer</option>
             <option value="Besucher">Ich war schon mal dabei :)</option>
-            <option value="SocialMedia">Über Social Media</option>
+            <option value="SocialMedia">
+              Über Social Media (Facebook, Instagram, ...)
+            </option>
             <option value="Freund">Über einen Freund</option>
             <option value="Other">Sonstiges</option>
           </select>
@@ -216,7 +275,7 @@ const EventFormCarousel: React.FC = () => {
 
         {/* Last Slide - Confirmation */}
         <div className="p-6 text-center">
-          <h3 className="text-2xl font-semibold mb-4">
+          <h3 className="text-2xl font-semibold mb-4 text-white">
             Bestätigen Sie Ihre Anmeldung
           </h3>
           <button
@@ -237,14 +296,22 @@ const EventFormCarousel: React.FC = () => {
       {/* Custom Navigation Buttons */}
       <div className="flex justify-between mt-4">
         {currentSlide > 0 && (
-          <button onClick={prevSlide} className="px-4 py-2 bg-gray-300 rounded">
+          <button
+            onClick={prevSlide}
+            className="px-4 py-2 bg-gray-700 text-white rounded"
+          >
             Back
           </button>
         )}
-        {currentSlide < 4 && (
+        {currentSlide < 5 && (
           <button
             onClick={nextSlide}
-            className="px-4 py-2 bg-gray-300 rounded ml-auto"
+            disabled={isNextDisabled()}
+            className={`px-4 py-2 rounded ml-auto ${
+              isNextDisabled()
+                ? "bg-gray-400 text-gray-200"
+                : "bg-gray-700 text-white"
+            }`}
           >
             Next
           </button>
