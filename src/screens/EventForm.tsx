@@ -226,6 +226,7 @@ const EventFormCarousel: React.FC = () => {
         </div>
 
         {/* Slide 5 - Recipe & Discovery */}
+        {/* Slide 5 - Recipe & Discovery */}
         <div className="p-6">
           <label className="block mb-2 text-white">
             Möchtest Du ein Rezept einbringen und eine Kochstation leiten?
@@ -256,21 +257,63 @@ const EventFormCarousel: React.FC = () => {
           <label className="block mt-4 mb-2 text-white">
             Wie hast Du von Über den Tellerrand Osnabrück erfahren?
           </label>
-          <select
-            name="discoveryMethod"
-            value={formData.discoveryMethod}
-            onChange={handleChange}
-            className="w-full px-4 py-2 border border-white rounded bg-transparent focus:outline-none text-white placeholder-white"
-          >
-            <option value="">Bitte auswählen</option>
-            <option value="Flyer">Über einen Flyer</option>
-            <option value="Besucher">Ich war schon mal dabei :)</option>
-            <option value="SocialMedia">
+          <div className="flex flex-col space-y-2">
+            <label>
+              <input
+                type="radio"
+                name="discoveryMethod"
+                value="Flyer"
+                checked={formData.discoveryMethod === "Flyer"}
+                onChange={handleChange}
+                className="mr-2"
+              />
+              Über einen Flyer
+            </label>
+            <label>
+              <input
+                type="radio"
+                name="discoveryMethod"
+                value="Besucher"
+                checked={formData.discoveryMethod === "Besucher"}
+                onChange={handleChange}
+                className="mr-2"
+              />
+              Ich war schon bei Über den Tellerrand Osnabrück :)
+            </label>
+            <label>
+              <input
+                type="radio"
+                name="discoveryMethod"
+                value="SocialMedia"
+                checked={formData.discoveryMethod === "SocialMedia"}
+                onChange={handleChange}
+                className="mr-2"
+              />
               Über Social Media (Facebook, Instagram, ...)
-            </option>
-            <option value="Freund">Über einen Freund</option>
-            <option value="Other">Sonstiges</option>
-          </select>
+            </label>
+            <label>
+              <input
+                type="radio"
+                name="discoveryMethod"
+                value="Freund"
+                checked={formData.discoveryMethod === "Freund"}
+                onChange={handleChange}
+                className="mr-2"
+              />
+              Über einen Freund
+            </label>
+            <label>
+              <input
+                type="radio"
+                name="discoveryMethod"
+                value="Other"
+                checked={formData.discoveryMethod === "Other"}
+                onChange={handleChange}
+                className="mr-2"
+              />
+              Sonstiges
+            </label>
+          </div>
         </div>
 
         {/* Last Slide - Confirmation */}
