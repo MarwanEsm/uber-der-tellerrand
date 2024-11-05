@@ -121,16 +121,19 @@ const EventForm: React.FC = () => {
           </div>
         </div>
 
-        <div className="p-8">
-          <p className="mb-6 leading-relaxed">
-            Die Schritte zur Registrierung:
-            <br />
+        <div className="py-8">
+          <p className="mb-6 leading-relaxed text-lg">
+            <strong>Die Schritte zur Registrierung:</strong>
+          </p>
+
+          <div className="mb-4">
             1. Ausfüllen des Anmeldeformulars.
             <br />
             2. Warten auf die Bestätigungs-E-Mail (innerhalb von 7 Tagen nach
             Absendung des Formulars)
-          </p>
-          <label className="block mb-2 text-white">Name *</label>
+          </div>
+
+          <label className="block mb-2 text-white float-left">Name *</label>
           <input
             type="text"
             name="name"
@@ -140,7 +143,7 @@ const EventForm: React.FC = () => {
             placeholder="Dein Name"
             required
           />
-          <label className="block mb-2 text-white">E-Mail *</label>
+          <label className="block mb-2 text-white float-left">E-Mail *</label>
           <input
             type="email"
             name="email"
@@ -152,7 +155,7 @@ const EventForm: React.FC = () => {
           />
         </div>
 
-        <div className="p-8">
+        <div className="py-8">
           <label className="block mb-4 text-white">
             Hast Du eine Allergie gegen Lebensmittel?
           </label>
@@ -168,7 +171,7 @@ const EventForm: React.FC = () => {
               />
               Nein
             </label>
-            <label className="flex items-center">
+            <label className="items-center block">
               <input
                 type="radio"
                 name="allergyInfo"
