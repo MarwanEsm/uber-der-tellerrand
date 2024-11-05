@@ -185,24 +185,27 @@ const EventForm: React.FC = () => {
             Hast du Lust, bei der nächsten Kochveranstaltung ein Rezept
             einzubringen und eine Kochstation zu leiten?
           </label>
-          <div className="flex items-center space-x-4">
-            <label>
+          <div>
+            <label className="flex items-center mb-2">
               <input
                 type="radio"
                 name="leadRecipe"
                 value="Nein"
                 checked={formData.leadRecipe === "Nein"}
                 onChange={handleChange}
+                className="mr-2"
               />
               Nein
             </label>
-            <label>
+
+            <label className="flex items-center mb-2">
               <input
                 type="radio"
                 name="leadRecipe"
                 value="Ja, gerne"
                 checked={formData.leadRecipe === "Ja, gerne"}
                 onChange={handleChange}
+                className="mr-2"
               />
               Ja, gerne
             </label>
