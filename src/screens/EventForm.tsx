@@ -80,7 +80,7 @@ const EventFormCarousel: React.FC = () => {
   };
 
   return (
-    <div className="max-w-lg w-full mx-auto p-6 bg-gradient-to-r from-purple-300 via-purple-400 to-purple-600 rounded-lg shadow-lg text-white">
+    <div className="max-w-lg mt-[30px] mx-[10px] p-6 bg-gradient-to-r from-purple-300 via-purple-400 to-purple-600 rounded-lg shadow-lg text-white">
       <Carousel
         selectedItem={currentSlide}
         showThumbs={false}
@@ -397,7 +397,7 @@ const EventFormCarousel: React.FC = () => {
         {currentSlide > 0 && (
           <button
             onClick={prevSlide}
-            className="px-4 py-2 bg-gray-700 text-white rounded"
+            className="px-4 py-2 bg-[#f39325] text-white rounded"
           >
             Back
           </button>
@@ -408,11 +408,11 @@ const EventFormCarousel: React.FC = () => {
             disabled={isNextDisabled()}
             className={`px-4 py-2 rounded ml-auto ${
               isNextDisabled()
-                ? "bg-gray-400 text-gray-200"
-                : "bg-gray-700 text-white"
+                ? "bg-gray-400 text-white"
+                : "bg-[#f39325] text-white"
             }`}
           >
-            Next
+            Weiter
           </button>
         )}
       </div>
