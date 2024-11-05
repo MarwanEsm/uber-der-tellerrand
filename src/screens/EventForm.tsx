@@ -10,15 +10,18 @@ const EventForm: React.FC = () => {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
-    allergyInfo: "Nein",
+    allergyInfo: "Not",
     allergyDetails: "",
-    instrument: "Nein",
+    instrument: "Not",
     instrumentDetails: "",
-    leadRecipe: "Nein",
+    leadRecipe: "Not",
     discoveryMethod: "",
     discoveryDetails: "",
     consent: false
   });
+
+  console.log(formData);
+
   const [submitMessage, setSubmitMessage] = useState<string | null>(null);
   const navigate = useNavigate();
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -57,8 +60,31 @@ const EventForm: React.FC = () => {
   const prevSlide = () => setCurrentSlide((prev) => Math.max(prev - 1, 0));
 
   const isNextDisabled = () => {
-    if (currentSlide === 1) return !formData.consent;
-    if (currentSlide === 2) return !formData.name || !formData.email;
+    if (currentSlide === 1) {
+      // Slide 1: Require consent checkbox to be checked
+      return !formData.consent;
+    }
+    if (currentSlide === 2) {
+      return !formData.name.trim() || !formData.email.trim();
+    }
+    if (currentSlide === 3) {
+      if (
+        (formData.allergyInfo === "Other" &&
+          formData.allergyDetails.trim() === "") ||
+        formData.allergyDetails !== "Nein"
+      ) {
+        return true;
+      }
+    }
+    if (currentSlide === 4) {
+      return (
+        formData.instrument === "Other" &&
+        formData.instrumentDetails.trim() === ""
+      );
+    }
+    if (currentSlide === 5) {
+      return formData.leadRecipe === "Not";
+    }
     return false;
   };
 
