@@ -6,7 +6,7 @@ import "react-responsive-carousel/lib/styles/carousel.min.css";
 import { useNavigate } from "react-router-dom";
 import { db } from "../firebase";
 
-const EventFormCarousel: React.FC = () => {
+const EventForm: React.FC = () => {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -63,7 +63,7 @@ const EventFormCarousel: React.FC = () => {
   };
 
   return (
-    <div className="max-w-lg mt-[30px] mx-[10px] p-6 bg-gradient-to-r from-purple-300 via-purple-400 to-purple-600 rounded-lg shadow-lg text-white">
+    <div className="max-w-lg mt-[70px] mx-[10px] p-8 bg-gradient-to-r bg-[#6F2CAB] rounded-lg shadow-2xl text-white">
       <Carousel
         selectedItem={currentSlide}
         showThumbs={false}
@@ -73,57 +73,50 @@ const EventFormCarousel: React.FC = () => {
         emulateTouch={false}
         onChange={setCurrentSlide}
       >
-        <div className="p-6 text-center">
-          <h3 className="text-xl font-semibold text-white mb-4">
+        <div className="py-8 text-center">
+          <h3 className="text-2xl font-bold mb-4 text-orange-300">
             Anmeldeformular
           </h3>
-          <p className="text-center text-white mb-6">
-            Liebe*r Teilnehmende,
+          <p className="leading-relaxed mb-4 text-lg">
+            <b>Liebe*r Teilnehmende,</b>
+          </p>
+          <div className="text-lg">
+            wie schön, dass du mit{" "}
+            <strong className="text-[#f39325]">DABEI SEIN</strong> möchtest! Um
+            Dir einen Platz zu sichern, füll bitte dieses Formular aus.
+            Daraufhin wirst Du von uns eine Nachricht mit allen weiteren Infos
+            bekommen.
             <br />
-            <br />
-            wie schön, dass du mit <strong>DABEI SEIN</strong> möchtest! Um Dir
-            einen Platz zu sichern, füll bitte dieses Formular aus. Daraufhin
-            wirst Du von uns eine Nachricht mit allen weiteren Infos bekommen.
-            <br />
-            <br />
-            Wir <strong>freuen uns auf Dich!</strong>
+            <strong className="text-[#f39325]">Wir freuen uns auf Dich!</strong>
             <br />
             Dein Über den Tellerrand-Team Osnabrück
-          </p>
+          </div>
         </div>
 
-        <div className="p-6">
-          <p className="text-white mb-4">
+        <div className="p-8">
+          <p className="leading-relaxed mb-4">
             Um den Kontakt zu erleichtern und unsere Aktivitäten besser zu
             organisieren, benötigen wir deine persönlichen Informationen sowie
             deine E-Mail-Adresse.
             <br />
-            <br />
             Bitte markiere das Kästchen unten, um uns die Erlaubnis zur Nutzung
             deiner Daten zu erteilen.
-            <br />
-            <br />
-            Deine Informationen werden sicher online in einem geschützten Ordner
-            auf Google Drive gespeichert. Du hast jederzeit die Möglichkeit,
-            deine Zustimmung zur Nutzung deiner Informationen zu widerrufen oder
-            uns per E-Mail zu kontaktieren, um Änderungen oder Löschungen deiner
-            Daten zu beantragen.
           </p>
-          <label className="flex items-center space-x-2 mt-4 text-white">
+          <label className="flex items-center space-x-3 text-lg">
             <input
               type="checkbox"
               name="consent"
               onChange={handleChange}
               checked={formData.consent}
-              className="form-checkbox h-5 w-5 text-orange-500"
+              className="form-checkbox h-6 w-6 text-orange-500 border-white focus:ring-2 focus:ring-orange-400"
               required
             />
             <span>Ja, ich erlaube die Nutzung meiner Daten</span>
           </label>
         </div>
 
-        <div className="p-6">
-          <p className="text-white mb-6">
+        <div className="p-8">
+          <p className="mb-6 leading-relaxed">
             Die Schritte zur Registrierung:
             <br />
             1. Ausfüllen des Anmeldeformulars.
@@ -137,7 +130,7 @@ const EventFormCarousel: React.FC = () => {
             name="name"
             value={formData.name}
             onChange={handleChange}
-            className="w-full px-4 py-2 mb-4 border border-white rounded bg-transparent focus:outline-none text-white placeholder-white"
+            className="w-full px-4 py-2 mb-4 border border-orange-300 rounded bg-transparent text-white placeholder-white focus:outline-none"
             placeholder="Dein Name"
             required
           />
@@ -147,17 +140,17 @@ const EventFormCarousel: React.FC = () => {
             name="email"
             value={formData.email}
             onChange={handleChange}
-            className="w-full px-4 py-2 mb-4 border border-white rounded bg-transparent focus:outline-none text-white placeholder-white"
+            className="w-full px-4 py-2 border border-orange-300 rounded bg-transparent text-white placeholder-white focus:outline-none"
             placeholder="Deine E-Mail-Adresse"
             required
           />
         </div>
 
-        <div className="p-6">
-          <label className="block mb-2 text-white">
+        <div className="p-8">
+          <label className="block mb-4 text-white">
             Hast Du eine Allergie gegen Lebensmittel?
           </label>
-          <div className="flex items-center space-x-2">
+          <div className="flex items-center space-x-4">
             <label className="flex items-center">
               <input
                 type="radio"
@@ -187,157 +180,20 @@ const EventFormCarousel: React.FC = () => {
                 value={formData.allergyDetails}
                 onChange={handleChange}
                 placeholder="Bitte geben Sie Ihre Allergie ein"
-                className="w-full px-4 py-2 mt-2 border border-white rounded bg-transparent focus:outline-none text-white placeholder-white"
-              />
-            )}
-          </div>
-
-          <label className="block mt-4 mb-2 text-white">
-            Welches Instrument bringst Du mit?
-          </label>
-          <div className="flex items-center space-x-2">
-            <label className="flex items-center">
-              <input
-                type="radio"
-                name="instrument"
-                value="Nein"
-                checked={formData.instrument === "Nein"}
-                onChange={handleChange}
-                className="mr-2"
-              />
-              Nein
-            </label>
-            <label className="flex items-center">
-              <input
-                type="radio"
-                name="instrument"
-                value="Other"
-                checked={formData.instrument === "Other"}
-                onChange={handleChange}
-                className="mr-2"
-              />
-              Sonstiges
-            </label>
-            {formData.instrument === "Other" && (
-              <input
-                type="text"
-                name="instrumentDetails"
-                value={formData.instrumentDetails}
-                onChange={handleChange}
-                placeholder="Bitte geben Sie Ihr Instrument ein"
-                className="w-full px-4 py-2 mt-2 border border-white rounded bg-transparent focus:outline-none text-white placeholder-white"
+                className="w-full px-3 py-2 mt-2 border border-white rounded bg-transparent text-white placeholder-white focus:outline-none"
               />
             )}
           </div>
         </div>
 
-        <div className="p-6">
-          <label className="block mb-2 text-white">
-            Möchtest Du ein Rezept einbringen und eine Kochstation leiten?
-          </label>
-          <div className="flex items-center space-x-2">
-            <label>
-              <input
-                type="radio"
-                name="leadRecipe"
-                value="Nein"
-                checked={formData.leadRecipe === "Nein"}
-                onChange={handleChange}
-              />{" "}
-              Nein
-            </label>
-            <label>
-              <input
-                type="radio"
-                name="leadRecipe"
-                value="Ja, gerne"
-                checked={formData.leadRecipe === "Ja, gerne"}
-                onChange={handleChange}
-              />{" "}
-              Ja, gerne
-            </label>
-          </div>
-
-          <label className="block mt-4 mb-2 text-white">
-            Wie hast Du von Über den Tellerrand Osnabrück erfahren?
-          </label>
-          <div className="flex flex-col space-y-2">
-            <label>
-              <input
-                type="radio"
-                name="discoveryMethod"
-                value="Flyer"
-                checked={formData.discoveryMethod === "Flyer"}
-                onChange={handleChange}
-                className="mr-2"
-              />{" "}
-              Über einen Flyer
-            </label>
-            <label>
-              <input
-                type="radio"
-                name="discoveryMethod"
-                value="Besucher"
-                checked={formData.discoveryMethod === "Besucher"}
-                onChange={handleChange}
-                className="mr-2"
-              />{" "}
-              Ich war schon bei Über den Tellerrand Osnabrück :)
-            </label>
-            <label>
-              <input
-                type="radio"
-                name="discoveryMethod"
-                value="SocialMedia"
-                checked={formData.discoveryMethod === "SocialMedia"}
-                onChange={handleChange}
-                className="mr-2"
-              />{" "}
-              Über Social Media (Facebook, Instagram, ...)
-            </label>
-            <label>
-              <input
-                type="radio"
-                name="discoveryMethod"
-                value="Freund"
-                checked={formData.discoveryMethod === "Freund"}
-                onChange={handleChange}
-                className="mr-2"
-              />{" "}
-              Über einen Freund
-            </label>
-            <label className="flex items-center">
-              <input
-                type="radio"
-                name="discoveryMethod"
-                value="Other"
-                checked={formData.discoveryMethod === "Other"}
-                onChange={handleChange}
-                className="mr-2"
-              />{" "}
-              Sonstiges
-              {formData.discoveryMethod === "Other" && (
-                <input
-                  type="text"
-                  name="discoveryDetails"
-                  value={formData.discoveryDetails}
-                  onChange={handleChange}
-                  placeholder="Bitte angeben"
-                  className="ml-2 px-2 py-1 border rounded bg-transparent focus:outline-none text-white placeholder-white"
-                />
-              )}
-            </label>
-          </div>
-        </div>
-
-        <div className="p-6 text-center">
+        <div className="p-8 text-center">
           <h3 className="text-2xl font-semibold mb-4 text-white">
             Bestätigen Sie Ihre Anmeldung
           </h3>
           <button
             type="submit"
             onClick={handleSubmit}
-            className="w-full bg-orange-500 text-white py-2 px-4 rounded-full hover:bg-orange-600 transition focus:outline-none focus:ring-4 focus:ring-orange-300"
+            className="w-full bg-orange-500 text-white py-3 px-4 rounded-full font-bold hover:bg-orange-600 transition focus:outline-none focus:ring-4 focus:ring-orange-300"
           >
             Formular absenden
           </button>
@@ -349,20 +205,24 @@ const EventFormCarousel: React.FC = () => {
         </div>
       </Carousel>
 
-      <div className="flex justify-between mt-4">
+      <div className="flex justify-between mt-8">
         {currentSlide > 0 && (
           <button
             onClick={prevSlide}
-            className="px-4 py-2 bg-[#f39325] text-white rounded"
+            className="px-5 py-3 bg-orange-500 text-white font-semibold rounded-full hover:bg-orange-600 transition focus:outline-none"
           >
-            Back
+            Zurück
           </button>
         )}
         {currentSlide < 5 && (
           <button
             onClick={nextSlide}
             disabled={isNextDisabled()}
-            className={`px-4 py-2 rounded ml-auto ${isNextDisabled() ? "bg-gray-400 text-white" : "bg-[#f39325] text-white"}`}
+            className={`px-5 py-3 rounded-full font-semibold ml-auto ${
+              isNextDisabled()
+                ? "bg-gray-400 text-white"
+                : "bg-orange-500 text-white hover:bg-orange-600 transition focus:outline-none"
+            }`}
           >
             Weiter
           </button>
@@ -372,4 +232,4 @@ const EventFormCarousel: React.FC = () => {
   );
 };
 
-export default EventFormCarousel;
+export default EventForm;
