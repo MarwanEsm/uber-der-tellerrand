@@ -122,45 +122,15 @@ const EventForm: React.FC = () => {
         </div>
 
         <div className="py-8">
-          <p className="mb-6 leading-relaxed text-lg">
-            <strong>Die Schritte zur Registrierung:</strong>
-          </p>
-
-          <div className="mb-4">
-            1. Ausfüllen des Anmeldeformulars.
-            <br />
-            2. Warten auf die Bestätigungs-E-Mail (innerhalb von 7 Tagen nach
-            Absendung des Formulars)
-          </div>
-
-          <label className="block mb-2 text-white float-left">Name *</label>
-          <input
-            type="text"
-            name="name"
-            value={formData.name}
-            onChange={handleChange}
-            className="w-full px-4 py-2 mb-4 border border-orange-300 rounded bg-transparent text-white placeholder-white focus:outline-none"
-            placeholder="Dein Name"
-            required
-          />
-          <label className="block mb-2 text-white float-left">E-Mail *</label>
-          <input
-            type="email"
-            name="email"
-            value={formData.email}
-            onChange={handleChange}
-            className="w-full px-4 py-2 border border-orange-300 rounded bg-transparent text-white placeholder-white focus:outline-none"
-            placeholder="Deine E-Mail-Adresse"
-            required
-          />
-        </div>
-
-        <div className="py-8">
           <label className="block mb-4 text-white">
-            Hast Du eine Allergie gegen Lebensmittel?
+            <span className="text-red-500 mr-2">*</span>Hast Du eine Allergie
+            gegen Lebensmittel?
           </label>
-          <div className="flex items-center space-x-4">
-            <label className="flex items-center">
+          <p className="text-white mb-4">
+            wenn Ja, schreib uns bitte unter Sonstiges, welche Allergie du hast
+          </p>
+          <div>
+            <label className="flex items-center mb-2">
               <input
                 type="radio"
                 name="allergyInfo"
@@ -171,7 +141,7 @@ const EventForm: React.FC = () => {
               />
               Nein
             </label>
-            <label className="items-center block">
+            <label className="flex items-center mb-2">
               <input
                 type="radio"
                 name="allergyInfo"
@@ -180,18 +150,17 @@ const EventForm: React.FC = () => {
                 onChange={handleChange}
                 className="mr-2"
               />
-              Sonstiges
+              Sonstiges:
             </label>
-            {formData.allergyInfo === "Other" && (
-              <input
-                type="text"
-                name="allergyDetails"
-                value={formData.allergyDetails}
-                onChange={handleChange}
-                placeholder="Bitte geben Sie Ihre Allergie ein"
-                className="w-full px-3 py-2 mt-2 border border-white rounded bg-transparent text-white placeholder-white focus:outline-none"
-              />
-            )}
+            <input
+              type="text"
+              disabled={formData.allergyInfo !== "Other"}
+              name="allergyDetails"
+              value={formData.allergyDetails}
+              onChange={handleChange}
+              placeholder="Bitte geben Sie Ihre Allergie ein"
+              className="px-3 py-2 w-full mt-2 border border-white rounded bg-transparent text-white placeholder-white focus:outline-none"
+            />
           </div>
         </div>
 
