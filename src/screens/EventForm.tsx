@@ -65,26 +65,29 @@ const EventForm: React.FC = () => {
   const nextSlide = () => setCurrentSlide((prev) => Math.min(prev + 1, 5));
   const prevSlide = () => setCurrentSlide((prev) => Math.max(prev - 1, 0));
 
-  const isNextDisabled = () => {
-    if (currentSlide === 1) {
+  // Individual button disable conditions for each slide
+  const isSlideButtonDisabled = (slideIndex: number) => {
+    if (slideIndex === 1) {
       return !formData.consent;
     }
-    if (currentSlide === 2) {
+    if (slideIndex === 2) {
       return !formData.name.trim() || !formData.email.trim();
     }
-    if (currentSlide === 3) {
+    if (slideIndex === 3) {
       return (
-        formData.allergyInfo === "Other" &&
-        formData.allergyDetails.trim() === ""
+        formData.allergyInfo === "Not" ||
+        (formData.allergyInfo === "Other" &&
+          formData.allergyDetails.trim() === "")
       );
     }
-    if (currentSlide === 4) {
+    if (slideIndex === 4) {
       return (
-        formData.instrument === "Other" &&
-        formData.instrumentDetails.trim() === ""
+        formData.instrument === "Not" ||
+        (formData.instrument === "Other" &&
+          formData.instrumentDetails.trim() === "")
       );
     }
-    if (currentSlide === 5) {
+    if (slideIndex === 5) {
       return formData.leadRecipe === "Not";
     }
     return false;
@@ -99,7 +102,7 @@ const EventForm: React.FC = () => {
         showArrows={false}
         swipeable={false}
         emulateTouch={false}
-        showIndicators={false} // Remove navigation dots
+        showIndicators={false}
       >
         <div className="py-8 text-center">
           <h3 className="text-2xl font-bold mb-4 text-orange-300">
@@ -109,7 +112,7 @@ const EventForm: React.FC = () => {
             <b>Liebe*r Teilnehmende,</b>
           </p>
           <div className="text-lg">
-            wie schön, dass du mit{" "}
+            wie schön, dass du mit
             <strong className="text-[#f39325]">DABEI SEIN</strong> möchtest! Um
             Dir einen Platz zu sichern, füll bitte dieses Formular aus.
             Daraufhin wirst Du von uns eine Nachricht mit allen weiteren Infos
@@ -119,6 +122,14 @@ const EventForm: React.FC = () => {
             <br />
             Dein Über den Tellerrand-Team Osnabrück
           </div>
+          <button
+            onClick={nextSlide}
+            className={
+              "mt-4 px-5 py-3 rounded-full font-semibold  bg-orange-500 text-white hover:bg-orange-600 transition focus:outline-none"
+            }
+          >
+            Weiter
+          </button>
         </div>
 
         <div className="py-8">
@@ -162,6 +173,17 @@ const EventForm: React.FC = () => {
               className="px-3 py-2 w-full mt-2 border border-white rounded bg-transparent text-white placeholder-white focus:outline-none"
             />
           </div>
+          <button
+            onClick={nextSlide}
+            disabled={isSlideButtonDisabled(3)}
+            className={`mt-4 px-5 py-3 rounded-full font-semibold ${
+              isSlideButtonDisabled(3)
+                ? "bg-gray-400 text-white"
+                : "bg-orange-500 text-white hover:bg-orange-600 transition focus:outline-none"
+            }`}
+          >
+            Weiter
+          </button>
         </div>
 
         <div className="py-8">
@@ -206,9 +228,20 @@ const EventForm: React.FC = () => {
               className="px-3 py-2 w-full mt-2 border border-white rounded bg-transparent text-white placeholder-white focus:outline-none"
             />
           </div>
+          <button
+            onClick={nextSlide}
+            disabled={isSlideButtonDisabled(4)}
+            className={`mt-4 px-5 py-3 rounded-full font-semibold ${
+              isSlideButtonDisabled(4)
+                ? "bg-gray-400 text-white"
+                : "bg-orange-500 text-white hover:bg-orange-600 transition focus:outline-none"
+            }`}
+          >
+            Weiter
+          </button>
         </div>
 
-        {/* Additional slides go here */}
+        {/* Additional slides with separate buttons can be added similarly */}
 
         <div className="p-8 text-center">
           <h3 className="text-2xl font-semibold mb-4 text-white">
@@ -236,19 +269,6 @@ const EventForm: React.FC = () => {
             className="px-5 py-3 bg-orange-500 text-white font-semibold rounded-full hover:bg-orange-600 transition focus:outline-none"
           >
             Zurück
-          </button>
-        )}
-        {currentSlide < 5 && (
-          <button
-            onClick={nextSlide}
-            disabled={isNextDisabled()}
-            className={`px-5 py-3 rounded-full font-semibold ml-auto ${
-              isNextDisabled()
-                ? "bg-gray-400 text-white"
-                : "bg-orange-500 text-white hover:bg-orange-600 transition focus:outline-none"
-            }`}
-          >
-            Weiter
           </button>
         )}
       </div>
