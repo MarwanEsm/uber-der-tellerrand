@@ -11,9 +11,12 @@ const EventFormCarousel: React.FC = () => {
     name: "",
     email: "",
     allergyInfo: "Nein",
+    allergyDetails: "", // Added allergyDetails
     instrument: "Nein",
+    instrumentDetails: "", // Added instrumentDetails
     leadRecipe: "Nein",
     discoveryMethod: "",
+    discoveryDetails: "", // Added discoveryDetails
     consent: false
   });
   const [submitMessage, setSubmitMessage] = useState<string | null>(null);
@@ -43,9 +46,12 @@ const EventFormCarousel: React.FC = () => {
           name: formData.name,
           email: formData.email,
           allergyInfo: formData.allergyInfo,
+          allergyDetails: formData.allergyDetails,
           instrument: formData.instrument,
+          instrumentDetails: formData.instrumentDetails,
           leadRecipe: formData.leadRecipe,
-          discoveryMethod: formData.discoveryMethod
+          discoveryMethod: formData.discoveryMethod,
+          discoveryDetails: formData.discoveryDetails
         });
 
         setSubmitMessage("Anmeldeformular erfolgreich abgeschickt!");
@@ -86,9 +92,9 @@ const EventFormCarousel: React.FC = () => {
       >
         {/* Slide 1 */}
         <div className="p-6 text-center">
-          <h2 className="text-3xl font-bold text-white mb-2">
+          {/* <h2 className="text-3xl font-bold text-white mb-2">
             IT IS SOMMER TIME!!! 08.06.2024 um 16 Uhr
-          </h2>
+          </h2> */}
           <p className="text-center text-white mb-6">
             Liebe*r Teilnehmende,
             <br />
@@ -172,60 +178,95 @@ const EventFormCarousel: React.FC = () => {
 
         {/* Slide 4 - Allergy & Instrument */}
         <div className="p-6">
+          {/* Allergy Information */}
           <label className="block mb-2 text-white">
             Hast Du eine Allergie gegen Lebensmittel?
           </label>
           <div className="flex items-center space-x-2">
-            <label>
+            <label className="flex items-center">
               <input
                 type="radio"
                 name="allergyInfo"
                 value="Nein"
                 checked={formData.allergyInfo === "Nein"}
                 onChange={handleChange}
+                className="mr-2"
               />
               Nein
             </label>
-            <label>
+            <label className="flex items-center">
               <input
                 type="radio"
                 name="allergyInfo"
                 value="Other"
                 checked={formData.allergyInfo === "Other"}
                 onChange={handleChange}
+                className="mr-2"
               />
-              Other
+              Sonstiges
             </label>
+            {formData.allergyInfo === "Other" && (
+              <input
+                type="text"
+                name="allergyDetails"
+                value={formData.allergyDetails}
+                onChange={(e) =>
+                  setFormData((prevData) => ({
+                    ...prevData,
+                    allergyDetails: e.target.value
+                  }))
+                }
+                placeholder="Bitte geben Sie Ihre Allergie ein"
+                className="w-full px-4 py-2 mt-2 border border-white rounded bg-transparent focus:outline-none text-white placeholder-white"
+              />
+            )}
           </div>
 
+          {/* Instrument Information */}
           <label className="block mt-4 mb-2 text-white">
             Welches Instrument bringst Du mit?
           </label>
           <div className="flex items-center space-x-2">
-            <label>
+            <label className="flex items-center">
               <input
                 type="radio"
                 name="instrument"
                 value="Nein"
                 checked={formData.instrument === "Nein"}
                 onChange={handleChange}
+                className="mr-2"
               />
               Nein
             </label>
-            <label>
+            <label className="flex items-center">
               <input
                 type="radio"
                 name="instrument"
                 value="Other"
                 checked={formData.instrument === "Other"}
                 onChange={handleChange}
+                className="mr-2"
               />
-              Other
+              Sonstiges
             </label>
+            {formData.instrument === "Other" && (
+              <input
+                type="text"
+                name="instrumentDetails"
+                value={formData.instrumentDetails}
+                onChange={(e) =>
+                  setFormData((prevData) => ({
+                    ...prevData,
+                    instrumentDetails: e.target.value
+                  }))
+                }
+                placeholder="Bitte geben Sie Ihr Instrument ein"
+                className="w-full px-4 py-2 mt-2 border border-white rounded bg-transparent focus:outline-none text-white placeholder-white"
+              />
+            )}
           </div>
         </div>
 
-        {/* Slide 5 - Recipe & Discovery */}
         {/* Slide 5 - Recipe & Discovery */}
         <div className="p-6">
           <label className="block mb-2 text-white">
@@ -302,7 +343,7 @@ const EventFormCarousel: React.FC = () => {
               />
               Über einen Freund
             </label>
-            <label>
+            <label className="flex items-center">
               <input
                 type="radio"
                 name="discoveryMethod"
@@ -312,6 +353,21 @@ const EventFormCarousel: React.FC = () => {
                 className="mr-2"
               />
               Sonstiges
+              {formData.discoveryMethod === "Other" && (
+                <input
+                  type="text"
+                  name="discoveryDetails"
+                  value={formData.discoveryDetails}
+                  onChange={(e) =>
+                    setFormData((prevData) => ({
+                      ...prevData,
+                      discoveryDetails: e.target.value
+                    }))
+                  }
+                  placeholder="Bitte angeben"
+                  className="ml-2 px-2 py-1 border rounded bg-transparent focus:outline-none text-white placeholder-white"
+                />
+              )}
             </label>
           </div>
         </div>
