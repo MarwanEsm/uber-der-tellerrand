@@ -212,6 +212,80 @@ const EventForm: React.FC = () => {
           </div>
         </div>
 
+        {/* New Discovery Method Block */}
+        <div className="py-8">
+          <label className="block mb-4 text-white">
+            Wie hast Du von Über den Tellerrand Osnabrück erfahren?
+          </label>
+          <div>
+            <label className="flex items-center mb-2">
+              <input
+                type="radio"
+                name="discoveryMethod"
+                value="Flyer"
+                checked={formData.discoveryMethod === "Flyer"}
+                onChange={handleChange}
+                className="mr-2"
+              />
+              Über einen Flyer
+            </label>
+
+            <label className="flex items-center mb-2">
+              <input
+                type="radio"
+                name="discoveryMethod"
+                value="Freund"
+                checked={formData.discoveryMethod === "Freund"}
+                onChange={handleChange}
+                className="mr-2"
+              />
+              Über einen Freund
+            </label>
+            <label className="flex items-center mb-2">
+              <input
+                type="radio"
+                name="discoveryMethod"
+                value="Besucher"
+                checked={formData.discoveryMethod === "Besucher"}
+                onChange={handleChange}
+                className="mr-2"
+              />
+              Ich war schon dabei
+            </label>
+            <label className="flex items-center mb-2">
+              <input
+                type="radio"
+                name="discoveryMethod"
+                value="SocialMedia"
+                checked={formData.discoveryMethod === "SocialMedia"}
+                onChange={handleChange}
+                className="mr-2"
+              />
+              Über Social Media
+            </label>
+            <label className="flex items-center mb-2">
+              <input
+                type="radio"
+                name="discoveryMethod"
+                value="Other"
+                checked={formData.discoveryMethod === "Other"}
+                onChange={handleChange}
+                className="mr-2"
+              />
+              Sonstiges:
+            </label>
+            <input
+              type="text"
+              disabled={formData.discoveryMethod !== "Other"}
+              name="discoveryDetails"
+              value={formData.discoveryDetails}
+              onChange={handleChange}
+              placeholder="Bitte angeben"
+              className="px-3 py-2 w-full mt-2 border border-white rounded bg-transparent text-white placeholder-white focus:outline-none"
+            />
+          </div>
+        </div>
+
         <div className="p-8 text-center">
           <h3 className="text-2xl font-semibold mb-4 text-white">
             Bestätigen Sie Ihre Anmeldung
