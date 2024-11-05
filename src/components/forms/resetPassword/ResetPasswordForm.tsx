@@ -1,3 +1,4 @@
+import { FirebaseError } from "firebase/app"; // Import FirebaseError
 import { getAuth, sendPasswordResetEmail } from "firebase/auth";
 import React, { ChangeEvent, FormEvent, useState } from "react";
 // eslint-disable-next-line import/no-extraneous-dependencies
@@ -42,8 +43,11 @@ const ResetPasswordForm: React.FC<ResetPasswordFormProps> = ({
         "Passwort-Reset-E-Mail wurde gesendet. Bitte prüfen Sie Ihren Posteingang."
       );
       console.log("Password reset email sent to:", email);
-    } catch (error: any) {
-      if (error.code === "auth/user-not-found") {
+    } catch (error: unknown) {
+      if (
+        error instanceof FirebaseError &&
+        error.code === "auth/user-not-found"
+      ) {
         setEmailError(
           "E-Mail-Adresse nicht gefunden. Bitte geben Sie eine registrierte E-Mail-Adresse ein."
         );
