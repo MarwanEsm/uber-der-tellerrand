@@ -197,7 +197,6 @@ const EventForm: React.FC = () => {
               />
               Nein
             </label>
-
             <label className="flex items-center mb-2">
               <input
                 type="radio"
@@ -212,7 +211,6 @@ const EventForm: React.FC = () => {
           </div>
         </div>
 
-        {/* New Discovery Method Block */}
         <div className="py-8">
           <label className="block mb-4 text-white">
             Wie hast Du von Über den Tellerrand Osnabrück erfahren?
@@ -229,7 +227,6 @@ const EventForm: React.FC = () => {
               />
               Über einen Flyer
             </label>
-
             <label className="flex items-center mb-2">
               <input
                 type="radio"
