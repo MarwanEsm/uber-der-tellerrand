@@ -19,7 +19,6 @@ const EventForm: React.FC = () => {
     discoveryDetails: "",
     consent: false
   });
-
   console.log(formData);
 
   const [submitMessage, setSubmitMessage] = useState<string | null>(null);
@@ -27,12 +26,31 @@ const EventForm: React.FC = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
 
   const handleChange = ({ target: { name, value, type, checked } }: any) => {
-    setFormData((prevData) => ({
-      ...prevData,
-      [name]: type === "checkbox" ? checked : value
-    }));
-  };
+    setFormData((prevData) => {
+      // Clear `allergyDetails` if "Nein" is selected for `allergyInfo`
+      if (name === "allergyInfo" && value === "Nein") {
+        return {
+          ...prevData,
+          [name]: value,
+          allergyDetails: ""
+        };
+      }
 
+      // Clear `instrumentDetails` if "Nein" is selected for `instrument`
+      if (name === "instrument" && value === "Nein") {
+        return {
+          ...prevData,
+          [name]: value,
+          instrumentDetails: ""
+        };
+      }
+
+      return {
+        ...prevData,
+        [name]: type === "checkbox" ? checked : value
+      };
+    });
+  };
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     const auth = getAuth();
@@ -65,27 +83,36 @@ const EventForm: React.FC = () => {
       return !formData.consent;
     }
     if (currentSlide === 2) {
+      // Slide 2: Require name and email to be filled
       return !formData.name.trim() || !formData.email.trim();
     }
     if (currentSlide === 3) {
       if (
+        formData.allergyInfo === "Not" ||
         (formData.allergyInfo === "Other" &&
-          formData.allergyDetails.trim() === "") ||
-        formData.allergyDetails !== "Nein"
+          formData.allergyDetails.trim() === "")
       ) {
         return true;
+      } else {
+        return false;
       }
     }
     if (currentSlide === 4) {
-      return (
-        formData.instrument === "Other" &&
-        formData.instrumentDetails.trim() === ""
-      );
+      if (
+        formData.instrument === "Not" ||
+        (formData.instrument === "Other" &&
+          formData.instrumentDetails.trim() === "")
+      ) {
+        return true;
+      } else {
+        return false;
+      }
     }
     if (currentSlide === 5) {
+      // Slide 5: Lead recipe selection
       return formData.leadRecipe === "Not";
     }
-    return false;
+    // return false;
   };
 
   return (
