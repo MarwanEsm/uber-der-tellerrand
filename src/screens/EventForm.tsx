@@ -65,7 +65,6 @@ const EventForm: React.FC = () => {
   const nextSlide = () => setCurrentSlide((prev) => Math.min(prev + 1, 7));
   const prevSlide = () => setCurrentSlide((prev) => Math.max(prev - 1, 0));
 
-  // Individual button disable conditions for each slide
   const isSlideButtonDisabled = (slideIndex: number) => {
     if (slideIndex === 1) {
       return !formData.consent;
@@ -119,7 +118,7 @@ const EventForm: React.FC = () => {
           </p>
           <div className="text-lg">
             wie schön, dass du mit
-            <strong className="text-[#f39325]">DABEI SEIN</strong> möchtest! Um
+            <strong className="text-[#f39325]"> DABEI SEIN</strong> möchtest! Um
             Dir einen Platz zu sichern, füll bitte dieses Formular aus.
             Daraufhin wirst Du von uns eine Nachricht mit allen weiteren Infos
             bekommen.
@@ -128,12 +127,14 @@ const EventForm: React.FC = () => {
             <br />
             Dein Über den Tellerrand-Team Osnabrück
           </div>
-          <button
-            onClick={nextSlide}
-            className="mt-4 px-5 py-3 rounded-full font-semibold bg-orange-500 text-white hover:bg-orange-600 transition focus:outline-none"
-          >
-            Weiter
-          </button>
+          <div className="flex justify-between mt-8">
+            <button
+              onClick={nextSlide}
+              className="px-5 py-3 rounded-full mx-auto font-semibold bg-orange-500 text-white hover:bg-orange-600 transition focus:outline-none"
+            >
+              Weiter
+            </button>
+          </div>
         </div>
 
         <div className="py-8">
@@ -177,17 +178,25 @@ const EventForm: React.FC = () => {
               className="px-3 py-2 w-full mt-2 border border-white rounded bg-transparent text-white placeholder-white focus:outline-none"
             />
           </div>
-          <button
-            onClick={nextSlide}
-            disabled={isSlideButtonDisabled(3)}
-            className={`mt-4 px-5 py-3 rounded-full font-semibold ${
-              isSlideButtonDisabled(3)
-                ? "bg-gray-400 text-white"
-                : "bg-orange-500 text-white hover:bg-orange-600 transition focus:outline-none"
-            }`}
-          >
-            Weiter
-          </button>
+          <div className="flex justify-between mt-8">
+            <button
+              onClick={prevSlide}
+              className="px-5 py-3 bg-orange-500 text-white font-semibold rounded-full hover:bg-orange-600 transition focus:outline-none"
+            >
+              Zurück
+            </button>
+            <button
+              onClick={nextSlide}
+              disabled={isSlideButtonDisabled(3)}
+              className={`px-5 py-3 rounded-full font-semibold ${
+                isSlideButtonDisabled(3)
+                  ? "bg-gray-400 text-white"
+                  : "bg-orange-500 text-white hover:bg-orange-600 transition focus:outline-none"
+              }`}
+            >
+              Weiter
+            </button>
+          </div>
         </div>
 
         <div className="py-8">
@@ -235,20 +244,27 @@ const EventForm: React.FC = () => {
               className="px-3 py-2 w-full mt-2 border border-white rounded bg-transparent text-white placeholder-white focus:outline-none"
             />
           </div>
-          <button
-            onClick={nextSlide}
-            disabled={isSlideButtonDisabled(4)}
-            className={`mt-4 px-5 py-3 rounded-full font-semibold ${
-              isSlideButtonDisabled(4)
-                ? "bg-gray-400 text-white"
-                : "bg-orange-500 text-white hover:bg-orange-600 transition focus:outline-none"
-            }`}
-          >
-            Weiter
-          </button>
+          <div className="flex justify-between mt-8">
+            <button
+              onClick={prevSlide}
+              className="px-5 py-3 bg-orange-500 text-white font-semibold rounded-full hover:bg-orange-600 transition focus:outline-none"
+            >
+              Zurück
+            </button>
+            <button
+              onClick={nextSlide}
+              disabled={isSlideButtonDisabled(4)}
+              className={`px-5 py-3 rounded-full font-semibold ${
+                isSlideButtonDisabled(4)
+                  ? "bg-gray-400 text-white"
+                  : "bg-orange-500 text-white hover:bg-orange-600 transition focus:outline-none"
+              }`}
+            >
+              Weiter
+            </button>
+          </div>
         </div>
 
-        {/* Slide for Recipe Inquiry */}
         <div className="py-8">
           <label className="block mb-4 text-white">
             Hast du Lust, bei der nächsten Kochveranstaltung ein Rezept
@@ -278,20 +294,27 @@ const EventForm: React.FC = () => {
               Ja, gerne
             </label>
           </div>
-          <button
-            onClick={nextSlide}
-            disabled={isSlideButtonDisabled(5)}
-            className={`mt-4 px-5 py-3 rounded-full font-semibold ${
-              isSlideButtonDisabled(5)
-                ? "bg-gray-400 text-white"
-                : "bg-orange-500 text-white hover:bg-orange-600 transition focus:outline-none"
-            }`}
-          >
-            Weiter
-          </button>
+          <div className="flex justify-between mt-8">
+            <button
+              onClick={prevSlide}
+              className="px-5 py-3 bg-orange-500 text-white font-semibold rounded-full hover:bg-orange-600 transition focus:outline-none"
+            >
+              Zurück
+            </button>
+            <button
+              onClick={nextSlide}
+              disabled={isSlideButtonDisabled(5)}
+              className={`px-5 py-3 rounded-full font-semibold ${
+                isSlideButtonDisabled(5)
+                  ? "bg-gray-400 text-white"
+                  : "bg-orange-500 text-white hover:bg-orange-600 transition focus:outline-none"
+              }`}
+            >
+              Weiter
+            </button>
+          </div>
         </div>
 
-        {/* Slide for Discovery Method */}
         <div className="py-8">
           <label className="block mb-4 text-white">
             Wie hast Du von Über den Tellerrand Osnabrück erfahren?
@@ -362,17 +385,25 @@ const EventForm: React.FC = () => {
               className="px-3 py-2 w-full mt-2 border border-white rounded bg-transparent text-white placeholder-white focus:outline-none"
             />
           </div>
-          <button
-            onClick={nextSlide}
-            disabled={isSlideButtonDisabled(6)}
-            className={`mt-4 px-5 py-3 rounded-full font-semibold ${
-              isSlideButtonDisabled(6)
-                ? "bg-gray-400 text-white"
-                : "bg-orange-500 text-white hover:bg-orange-600 transition focus:outline-none"
-            }`}
-          >
-            Weiter
-          </button>
+          <div className="flex justify-between mt-8">
+            <button
+              onClick={prevSlide}
+              className="px-5 py-3 bg-orange-500 text-white font-semibold rounded-full hover:bg-orange-600 transition focus:outline-none"
+            >
+              Zurück
+            </button>
+            <button
+              onClick={nextSlide}
+              disabled={isSlideButtonDisabled(6)}
+              className={`px-5 py-3 rounded-full font-semibold ${
+                isSlideButtonDisabled(6)
+                  ? "bg-gray-400 text-white"
+                  : "bg-orange-500 text-white hover:bg-orange-600 transition focus:outline-none"
+              }`}
+            >
+              Weiter
+            </button>
+          </div>
         </div>
 
         <div className="p-8 text-center">
@@ -393,17 +424,6 @@ const EventForm: React.FC = () => {
           )}
         </div>
       </Carousel>
-
-      <div className="flex justify-between mt-8">
-        {currentSlide > 0 && (
-          <button
-            onClick={prevSlide}
-            className="px-5 py-3 bg-orange-500 text-white font-semibold rounded-full hover:bg-orange-600 transition focus:outline-none"
-          >
-            Zurück
-          </button>
-        )}
-      </div>
     </div>
   );
 };
