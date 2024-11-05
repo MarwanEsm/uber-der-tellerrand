@@ -93,26 +93,32 @@ const EventForm: React.FC = () => {
           </div>
         </div>
 
-        <div className="p-8">
-          <p className="leading-relaxed mb-4">
+        <div className="py-8">
+          <p className="leading-relaxed mb-4 text-lg">
             Um den Kontakt zu erleichtern und unsere Aktivitäten besser zu
             organisieren, benötigen wir deine persönlichen Informationen sowie
             deine E-Mail-Adresse.
             <br />
+          </p>
+          <div className="leading-relaxed mb-4 text-lg">
             Bitte markiere das Kästchen unten, um uns die Erlaubnis zur Nutzung
             deiner Daten zu erteilen.
-          </p>
-          <label className="flex items-center space-x-3 text-lg">
+          </div>
+          <div className="flex text-lg">
             <input
               type="checkbox"
               name="consent"
               onChange={handleChange}
               checked={formData.consent}
-              className="form-checkbox h-6 w-6 text-orange-500 border-white focus:ring-2 focus:ring-orange-400"
+              className="form-checkbox mt-[5px] h-4 w-4 text-orange-500 border-white"
               required
             />
-            <span>Ja, ich erlaube die Nutzung meiner Daten</span>
-          </label>
+            <label
+              className={`${formData.consent ? "text-orange-500" : "text-white"}`}
+            >
+              Ja, ich erlaube die Nutzung meiner Daten
+            </label>
+          </div>
         </div>
 
         <div className="p-8">
