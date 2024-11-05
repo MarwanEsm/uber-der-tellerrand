@@ -11,20 +11,19 @@ const EventFormCarousel: React.FC = () => {
     name: "",
     email: "",
     allergyInfo: "Nein",
-    allergyDetails: "", // Added allergyDetails
+    allergyDetails: "",
     instrument: "Nein",
-    instrumentDetails: "", // Added instrumentDetails
+    instrumentDetails: "",
     leadRecipe: "Nein",
     discoveryMethod: "",
-    discoveryDetails: "", // Added discoveryDetails
+    discoveryDetails: "",
     consent: false
   });
   const [submitMessage, setSubmitMessage] = useState<string | null>(null);
   const navigate = useNavigate();
   const [currentSlide, setCurrentSlide] = useState(0);
 
-  const handleChange = (e: any) => {
-    const { name, value, type, checked } = e.target;
+  const handleChange = ({ target: { name, value, type, checked } }: any) => {
     setFormData((prevData) => ({
       ...prevData,
       [name]: type === "checkbox" ? checked : value
@@ -33,35 +32,24 @@ const EventFormCarousel: React.FC = () => {
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
+    const auth = getAuth();
+    const user = auth.currentUser;
 
-    try {
-      const auth = getAuth();
-      const user = auth.currentUser;
-
-      if (user) {
-        const userDocRef = doc(db, "users", user.uid);
-        await updateDoc(userDocRef, { firstLogin: false });
-
+    if (user) {
+      const userDocRef = doc(db, "users", user.uid);
+      try {
         await updateDoc(userDocRef, {
-          name: formData.name,
-          email: formData.email,
-          allergyInfo: formData.allergyInfo,
-          allergyDetails: formData.allergyDetails,
-          instrument: formData.instrument,
-          instrumentDetails: formData.instrumentDetails,
-          leadRecipe: formData.leadRecipe,
-          discoveryMethod: formData.discoveryMethod,
-          discoveryDetails: formData.discoveryDetails
+          firstLogin: false,
+          ...formData
         });
-
         setSubmitMessage("Anmeldeformular erfolgreich abgeschickt!");
         setTimeout(() => navigate("/events"), 3000);
+      } catch (error) {
+        console.error("Error updating document:", error);
+        setSubmitMessage(
+          "Fehler beim Absenden des Formulars. Bitte versuchen Sie es erneut."
+        );
       }
-    } catch (error) {
-      console.error("Error updating document:", error);
-      setSubmitMessage(
-        "Fehler beim Absenden des Formulars. Bitte versuchen Sie es erneut."
-      );
     }
   };
 
@@ -69,14 +57,9 @@ const EventFormCarousel: React.FC = () => {
   const prevSlide = () => setCurrentSlide((prev) => Math.max(prev - 1, 0));
 
   const isNextDisabled = () => {
-    switch (currentSlide) {
-      case 2:
-        return !formData.name || !formData.email;
-      case 1:
-        return !formData.consent;
-      default:
-        return false;
-    }
+    if (currentSlide === 1) return !formData.consent;
+    if (currentSlide === 2) return !formData.name || !formData.email;
+    return false;
   };
 
   return (
@@ -90,11 +73,10 @@ const EventFormCarousel: React.FC = () => {
         emulateTouch={false}
         onChange={setCurrentSlide}
       >
-        {/* Slide 1 */}
         <div className="p-6 text-center">
-          {/* <h2 className="text-3xl font-bold text-white mb-2">
-            IT IS SOMMER TIME!!! 08.06.2024 um 16 Uhr
-          </h2> */}
+          <h3 className="text-xl font-semibold text-white mb-4">
+            Anmeldeformular
+          </h3>
           <p className="text-center text-white mb-6">
             Liebe*r Teilnehmende,
             <br />
@@ -110,7 +92,6 @@ const EventFormCarousel: React.FC = () => {
           </p>
         </div>
 
-        {/* Slide 2 - Consent */}
         <div className="p-6">
           <p className="text-white mb-4">
             Um den Kontakt zu erleichtern und unsere Aktivitäten besser zu
@@ -141,11 +122,7 @@ const EventFormCarousel: React.FC = () => {
           </label>
         </div>
 
-        {/* Slide 3 - Name and Email */}
         <div className="p-6">
-          <h3 className="text-xl font-semibold text-white mb-4">
-            Anmeldeformular
-          </h3>
           <p className="text-white mb-6">
             Die Schritte zur Registrierung:
             <br />
@@ -176,9 +153,7 @@ const EventFormCarousel: React.FC = () => {
           />
         </div>
 
-        {/* Slide 4 - Allergy & Instrument */}
         <div className="p-6">
-          {/* Allergy Information */}
           <label className="block mb-2 text-white">
             Hast Du eine Allergie gegen Lebensmittel?
           </label>
@@ -210,19 +185,13 @@ const EventFormCarousel: React.FC = () => {
                 type="text"
                 name="allergyDetails"
                 value={formData.allergyDetails}
-                onChange={(e) =>
-                  setFormData((prevData) => ({
-                    ...prevData,
-                    allergyDetails: e.target.value
-                  }))
-                }
+                onChange={handleChange}
                 placeholder="Bitte geben Sie Ihre Allergie ein"
                 className="w-full px-4 py-2 mt-2 border border-white rounded bg-transparent focus:outline-none text-white placeholder-white"
               />
             )}
           </div>
 
-          {/* Instrument Information */}
           <label className="block mt-4 mb-2 text-white">
             Welches Instrument bringst Du mit?
           </label>
@@ -254,12 +223,7 @@ const EventFormCarousel: React.FC = () => {
                 type="text"
                 name="instrumentDetails"
                 value={formData.instrumentDetails}
-                onChange={(e) =>
-                  setFormData((prevData) => ({
-                    ...prevData,
-                    instrumentDetails: e.target.value
-                  }))
-                }
+                onChange={handleChange}
                 placeholder="Bitte geben Sie Ihr Instrument ein"
                 className="w-full px-4 py-2 mt-2 border border-white rounded bg-transparent focus:outline-none text-white placeholder-white"
               />
@@ -267,7 +231,6 @@ const EventFormCarousel: React.FC = () => {
           </div>
         </div>
 
-        {/* Slide 5 - Recipe & Discovery */}
         <div className="p-6">
           <label className="block mb-2 text-white">
             Möchtest Du ein Rezept einbringen und eine Kochstation leiten?
@@ -280,7 +243,7 @@ const EventFormCarousel: React.FC = () => {
                 value="Nein"
                 checked={formData.leadRecipe === "Nein"}
                 onChange={handleChange}
-              />
+              />{" "}
               Nein
             </label>
             <label>
@@ -290,7 +253,7 @@ const EventFormCarousel: React.FC = () => {
                 value="Ja, gerne"
                 checked={formData.leadRecipe === "Ja, gerne"}
                 onChange={handleChange}
-              />
+              />{" "}
               Ja, gerne
             </label>
           </div>
@@ -307,7 +270,7 @@ const EventFormCarousel: React.FC = () => {
                 checked={formData.discoveryMethod === "Flyer"}
                 onChange={handleChange}
                 className="mr-2"
-              />
+              />{" "}
               Über einen Flyer
             </label>
             <label>
@@ -318,7 +281,7 @@ const EventFormCarousel: React.FC = () => {
                 checked={formData.discoveryMethod === "Besucher"}
                 onChange={handleChange}
                 className="mr-2"
-              />
+              />{" "}
               Ich war schon bei Über den Tellerrand Osnabrück :)
             </label>
             <label>
@@ -329,7 +292,7 @@ const EventFormCarousel: React.FC = () => {
                 checked={formData.discoveryMethod === "SocialMedia"}
                 onChange={handleChange}
                 className="mr-2"
-              />
+              />{" "}
               Über Social Media (Facebook, Instagram, ...)
             </label>
             <label>
@@ -340,7 +303,7 @@ const EventFormCarousel: React.FC = () => {
                 checked={formData.discoveryMethod === "Freund"}
                 onChange={handleChange}
                 className="mr-2"
-              />
+              />{" "}
               Über einen Freund
             </label>
             <label className="flex items-center">
@@ -351,19 +314,14 @@ const EventFormCarousel: React.FC = () => {
                 checked={formData.discoveryMethod === "Other"}
                 onChange={handleChange}
                 className="mr-2"
-              />
+              />{" "}
               Sonstiges
               {formData.discoveryMethod === "Other" && (
                 <input
                   type="text"
                   name="discoveryDetails"
                   value={formData.discoveryDetails}
-                  onChange={(e) =>
-                    setFormData((prevData) => ({
-                      ...prevData,
-                      discoveryDetails: e.target.value
-                    }))
-                  }
+                  onChange={handleChange}
                   placeholder="Bitte angeben"
                   className="ml-2 px-2 py-1 border rounded bg-transparent focus:outline-none text-white placeholder-white"
                 />
@@ -372,7 +330,6 @@ const EventFormCarousel: React.FC = () => {
           </div>
         </div>
 
-        {/* Last Slide - Confirmation */}
         <div className="p-6 text-center">
           <h3 className="text-2xl font-semibold mb-4 text-white">
             Bestätigen Sie Ihre Anmeldung
@@ -392,7 +349,6 @@ const EventFormCarousel: React.FC = () => {
         </div>
       </Carousel>
 
-      {/* Custom Navigation Buttons */}
       <div className="flex justify-between mt-4">
         {currentSlide > 0 && (
           <button
@@ -406,11 +362,7 @@ const EventFormCarousel: React.FC = () => {
           <button
             onClick={nextSlide}
             disabled={isNextDisabled()}
-            className={`px-4 py-2 rounded ml-auto ${
-              isNextDisabled()
-                ? "bg-gray-400 text-white"
-                : "bg-[#f39325] text-white"
-            }`}
+            className={`px-4 py-2 rounded ml-auto ${isNextDisabled() ? "bg-gray-400 text-white" : "bg-[#f39325] text-white"}`}
           >
             Weiter
           </button>
