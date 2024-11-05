@@ -94,34 +94,6 @@ const EventForm: React.FC = () => {
         </div>
 
         <div className="py-8">
-          <p className="leading-relaxed mb-4 text-lg">
-            Um den Kontakt zu erleichtern und unsere Aktivitäten besser zu
-            organisieren, benötigen wir deine persönlichen Informationen sowie
-            deine E-Mail-Adresse.
-            <br />
-          </p>
-          <div className="leading-relaxed mb-4 text-lg">
-            Bitte markiere das Kästchen unten, um uns die Erlaubnis zur Nutzung
-            deiner Daten zu erteilen.
-          </div>
-          <div className="flex text-lg">
-            <input
-              type="checkbox"
-              name="consent"
-              onChange={handleChange}
-              checked={formData.consent}
-              className="form-checkbox mt-[5px] h-4 w-4 text-orange-500 border-white"
-              required
-            />
-            <label
-              className={`${formData.consent ? "text-orange-500" : "text-white"}`}
-            >
-              Ja, ich erlaube die Nutzung meiner Daten
-            </label>
-          </div>
-        </div>
-
-        <div className="py-8">
           <label className="block mb-4 text-white">
             <span className="text-red-500 mr-2">*</span>Hast Du eine Allergie
             gegen Lebensmittel?
@@ -161,6 +133,79 @@ const EventForm: React.FC = () => {
               placeholder="Bitte geben Sie Ihre Allergie ein"
               className="px-3 py-2 w-full mt-2 border border-white rounded bg-transparent text-white placeholder-white focus:outline-none"
             />
+          </div>
+        </div>
+
+        <div className="py-8">
+          <label className="block mb-4 text-white">
+            <span className="text-red-500 mr-2">*</span>Welches Instrument
+            bringst Du mit?
+          </label>
+          <p className="text-white mb-4">
+            Wenn du ein Instrument mitbringen möchtest, schreib bitte unter
+            Sonstiges, welches Musikinstrument du mitbringst.
+          </p>
+          <div>
+            <label className="flex items-center mb-2">
+              <input
+                type="radio"
+                name="instrument"
+                value="Nein"
+                checked={formData.instrument === "Nein"}
+                onChange={handleChange}
+                className="mr-2"
+              />
+              Nein
+            </label>
+            <label className="flex items-center mb-2">
+              <input
+                type="radio"
+                name="instrument"
+                value="Other"
+                checked={formData.instrument === "Other"}
+                onChange={handleChange}
+                className="mr-2"
+              />
+              Sonstiges:
+            </label>
+            <input
+              type="text"
+              disabled={formData.instrument !== "Other"}
+              name="instrumentDetails"
+              value={formData.instrumentDetails}
+              onChange={handleChange}
+              placeholder="Bitte geben Sie Ihr Instrument ein"
+              className="px-3 py-2 w-full mt-2 border border-white rounded bg-transparent text-white placeholder-white focus:outline-none"
+            />
+          </div>
+        </div>
+
+        <div className="py-8">
+          <label className="block mb-4 text-white">
+            Hast du Lust, bei der nächsten Kochveranstaltung ein Rezept
+            einzubringen und eine Kochstation zu leiten?
+          </label>
+          <div className="flex items-center space-x-4">
+            <label>
+              <input
+                type="radio"
+                name="leadRecipe"
+                value="Nein"
+                checked={formData.leadRecipe === "Nein"}
+                onChange={handleChange}
+              />
+              Nein
+            </label>
+            <label>
+              <input
+                type="radio"
+                name="leadRecipe"
+                value="Ja, gerne"
+                checked={formData.leadRecipe === "Ja, gerne"}
+                onChange={handleChange}
+              />
+              Ja, gerne
+            </label>
           </div>
         </div>
 
