@@ -6,7 +6,7 @@ import Footer from "./components/elements/Footer/Footer";
 import Menu from "./components/elements/menu/Menu";
 import "./index.css";
 import store from "./redux/store";
-import Admin from "./screens/Admin";
+import AdminEventsPage from "./screens/Admin";
 import EventForm from "./screens/EventForm";
 import Events from "./screens/Events";
 import Home from "./screens/Home";
@@ -33,7 +33,7 @@ const App = () => {
               <Route path="/inventory" element={<Inventory />} />
               <Route path="/registration" element={<Registration />} />
               <Route path="/events" element={<Events />} />
-              <Route path="/admin" element={<Admin />} />
+              <Route path="/admin" element={<AdminEventsPage />} />
             </Routes>
           </main>
           <Footer />
