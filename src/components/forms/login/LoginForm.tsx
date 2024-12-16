@@ -51,18 +51,22 @@ const LoginForm = (props: ILoginProps) => {
         state.email,
         state.password
       );
-      const userId = userCredential.user.uid;
+      const user = userCredential.user;
 
-      // Retrieve firstLogin flag from Firestore
-      const userDoc = await getDoc(doc(db, "users", userId));
+      // Check if the user is the specific admin user
+      if (user.email === "osnabrueck@ueberdentellerrand.org") {
+        navigate("/admin"); // Redirect to the admin page
+        return; // Exit function here
+      }
+
+      // Retrieve firstLogin flag from Firestore for other users
+      const userDoc = await getDoc(doc(db, "users", user.uid));
       const userData = userDoc.data();
 
       if (userData && userData.firstLogin) {
-        // Redirect to /form if first login
-        navigate("/form");
+        navigate("/form"); // Redirect to /form for first login
       } else {
-        // Otherwise, redirect to /events
-        navigate("/events");
+        navigate("/events"); // Redirect to /events otherwise
       }
     } catch (error: unknown) {
       if (error instanceof Error) {
