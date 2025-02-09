@@ -37,8 +37,18 @@ const AdminEventsPage: React.FC = () => {
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
-    if (file) {
-      const storage = getStorage();
+    if (!file) return;
+
+    try {
+      const storage = getStorage(); // Ensure Storage is initialized
+      if (!storage) {
+        console.error("Firebase Storage not initialized properly.");
+        setMessage(
+          "Fehler: Firebase Storage konnte nicht initialisiert werden."
+        );
+        return;
+      }
+
       const storageRef = ref(storage, `events/${file.name}`); // Create a reference
       const uploadTask = uploadBytesResumable(storageRef, file);
 
@@ -61,6 +71,9 @@ const AdminEventsPage: React.FC = () => {
           setMessage("Foto erfolgreich hochgeladen.");
         }
       );
+    } catch (error) {
+      console.error("Unexpected error:", error);
+      setMessage("Unerwarteter Fehler beim Hochladen.");
     }
   };
 

@@ -54,13 +54,13 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({
         setShowLoginForm();
       }, 3000); // 3 seconds delay to show the message before redirecting
     } catch (error: unknown) {
-      // Set failure message and status
+      console.error("Firebase Error:", error); // Add this line
+
       if (error instanceof Error) {
         setMessage(`Registrierung fehlgeschlagen: ${error.message}`);
       }
       setIsSuccess(false);
 
-      // Hide the message after 3 seconds
       setTimeout(() => setMessage(null), 3000);
     }
   };
