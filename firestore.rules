@@ -1,0 +1,17 @@
+rules_version = '2';
+
+service firebase.storage {
+  match /b/{bucket}/o {
+    // Allow public read access to images (Fix CORS issue)
+    match /events/{allPaths=**} {
+      allow read: if true; // Allow anyone to read images (prevents CORS issue)
+      allow write: if request.auth != null && request.auth.token.email == "osnabrueck@ueberdentellerrand.org";
+    }
+
+    // Allow OPTIONS requests for preflight checks (Fix CORS issue)
+    match /{allPaths=**} {
+      allow read: if request.method == "get"; // Ensure GET requests work
+      allow write: if request.auth != null; // Allow authenticated users to write
+    }
+  }
+}

@@ -1,20 +1,15 @@
 // AdminEventsPage.tsx
+import React from "react"
 import { getAuth, signOut } from "firebase/auth";
-import { collection, doc, setDoc } from "firebase/firestore";
-import {
-  getDownloadURL,
-  getStorage,
-  ref,
-  uploadBytesResumable
-} from "firebase/storage";
-import React, { FormEvent, useState } from "react";
+import { FormEvent, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { db } from "../firebase";
+import { getStorage, ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
+import { getFirestore, collection, addDoc } from "firebase/firestore";
 
 interface IEvent {
   date: string;
   location: string;
-  photo: string;
+  photo: string | File;
 }
 
 const AdminEventsPage: React.FC = () => {
@@ -28,10 +23,10 @@ const AdminEventsPage: React.FC = () => {
   const [uploadProgress, setUploadProgress] = useState<number | null>(null);
   const navigate = useNavigate();
   const auth = getAuth();
+  const storage = getStorage();
+  const db = getFirestore();
 
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setEvent({ ...event, [e.target.name]: e.target.value });
   };
 
@@ -39,48 +34,14 @@ const AdminEventsPage: React.FC = () => {
     const file = e.target.files?.[0];
     if (!file) return;
 
-    try {
-      const storage = getStorage(); // Ensure Storage is initialized
-      if (!storage) {
-        console.error("Firebase Storage not initialized properly.");
-        setMessage(
-          "Fehler: Firebase Storage konnte nicht initialisiert werden."
-        );
-        return;
-      }
-
-      const storageRef = ref(storage, `events/${file.name}`); // Create a reference
-      const uploadTask = uploadBytesResumable(storageRef, file);
-
-      uploadTask.on(
-        "state_changed",
-        (snapshot) => {
-          const progress =
-            (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-          setUploadProgress(progress); // Update progress
-        },
-        (error) => {
-          console.error("Error uploading file:", error);
-          setMessage("Fehler beim Hochladen des Fotos.");
-        },
-        async () => {
-          const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
-          console.log("File available at", downloadURL);
-          setEvent((prev) => ({ ...prev, photo: downloadURL })); // Save photo URL
-          setUploadProgress(null); // Reset progress
-          setMessage("Foto erfolgreich hochgeladen.");
-        }
-      );
-    } catch (error) {
-      console.error("Unexpected error:", error);
-      setMessage("Unerwarteter Fehler beim Hochladen.");
-    }
+    // Store the file in state without uploading yet
+    setEvent((prev) => ({ ...prev, photo: file }));
   };
 
   const handleLogout = async () => {
     try {
-      await signOut(auth); // Sign out the user
-      navigate("/"); // Redirect to login page
+      await signOut(auth);
+      navigate("/");
     } catch (error) {
       console.error("Fehler beim Abmelden:", error);
       setMessage("Fehler beim Abmelden.");
@@ -92,17 +53,46 @@ const AdminEventsPage: React.FC = () => {
     setMessage(null);
 
     try {
+      let photoURL = "";
+
+      if (event.photo && event.photo instanceof File) {
+        const storageRef = ref(storage, `events/${event.photo.name}`);
+        const uploadTask = uploadBytesResumable(storageRef, event.photo);
+
+        await new Promise<void>((resolve, reject) => {
+          uploadTask.on(
+            "state_changed",
+            (snapshot) => {
+              const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+              setUploadProgress(progress);
+            },
+            (error) => {
+              console.error("Error uploading file:", error);
+              setMessage("Fehler beim Hochladen des Fotos.");
+              reject(error);
+            },
+            async () => {
+              photoURL = await getDownloadURL(uploadTask.snapshot.ref);
+              resolve();
+            }
+          );
+        });
+      }
+
       // Add the event to Firestore
       const eventsRef = collection(db, "events");
-      await setDoc(doc(eventsRef), event);
+      await addDoc(eventsRef, {
+        date: event.date,
+        location: event.location,
+        photo: photoURL
+      });
 
       setMessage("Event erfolgreich hinzugefügt!");
-      setEvent({ date: "", location: "", photo: "" }); // Reset the form
+      setEvent({ date: "", location: "", photo: "" });
+      setUploadProgress(null);
     } catch (error) {
       console.error("Fehler beim Hinzufügen des Events:", error);
-      setMessage(
-        "Fehler beim Hinzufügen des Events. Bitte versuchen Sie es erneut."
-      );
+      setMessage("Fehler beim Hinzufügen des Events. Bitte versuchen Sie es erneut.");
     }
   };
 
